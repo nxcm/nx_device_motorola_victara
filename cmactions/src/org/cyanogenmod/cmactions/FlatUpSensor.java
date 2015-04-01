@@ -28,26 +28,26 @@ public class FlatUpSensor implements ActionableSensor, SensorEventListener {
     private State mState;
     private SensorAction mSensorAction;
 
-    private Sensor sensor;
+    private Sensor mSensor;
 
     public FlatUpSensor(SensorHelper sensorHelper, State state, SensorAction action) {
         mSensorHelper = sensorHelper;
         mState = state;
         mSensorAction = action;
 
-        sensor = sensorHelper.getFlatUpSensor();
+        mSensor = sensorHelper.getFlatUpSensor();
     }
 
     @Override
-    public void enable() {
-        Log.d(TAG, "Enabling");
-        mSensorHelper.registerListener(sensor, this);
-    }
-
-    @Override
-    public void disable() {
+    public void setScreenOn() {
         Log.d(TAG, "Disabling");
         mSensorHelper.unregisterListener(this);
+    }
+
+    @Override
+    public void setScreenOff() {
+        Log.d(TAG, "Enabling");
+        mSensorHelper.registerListener(mSensor, this);
     }
 
     @Override
@@ -65,6 +65,6 @@ public class FlatUpSensor implements ActionableSensor, SensorEventListener {
     }
 
     @Override
-    public void onAccuracyChanged(Sensor sensor, int accuracy) {
+    public void onAccuracyChanged(Sensor mSensor, int accuracy) {
     }
 }
