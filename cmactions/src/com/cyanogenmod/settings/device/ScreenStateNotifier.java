@@ -19,5 +19,4 @@ package com.cyanogenmod.settings.device;
 interface ScreenStateNotifier {
     public void screenTurnedOn();
     public void screenTurnedOff();
-    public void IncomingCall();
 }

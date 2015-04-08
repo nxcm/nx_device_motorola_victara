@@ -21,7 +21,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.PowerManager;
 import android.provider.Settings;
-import android.telecom.TelecomManager;
 import android.util.Log;
 
 import java.util.List;
@@ -36,7 +35,6 @@ public class CMActionsService extends IntentService implements ScreenStateNotifi
 
     private CameraActivationAction mCameraActivationAction;
     private DozePulseAction mDozePulseAction;
-    private SilentRingerAction mSilentRingerAction;
 
     private List<ActionableSensor> mActionableSensors = new LinkedList<ActionableSensor>();
 
@@ -53,28 +51,19 @@ public class CMActionsService extends IntentService implements ScreenStateNotifi
         mScreenReceiver = new ScreenReceiver(context, this);
 
         mCameraActivationAction = new CameraActivationAction(context);
-        mSilentRingerAction = new SilentRingerAction(context);
         mDozePulseAction = new DozePulseAction(context, mState);
 
         mActionableSensors.add(new CameraActivationSensor(mSensorHelper, mCameraActivationAction));
-        mActionableSensors.add(new IrGestureSensor(mSensorHelper, mSilentRingerAction));
         mActionableSensors.add(new FlatUpSensor(mSensorHelper, mState, mDozePulseAction));
         mActionableSensors.add(new IrGestureSensor(mSensorHelper, mDozePulseAction));
         mActionableSensors.add(new StowSensor(mSensorHelper, mState, mDozePulseAction));
 
         PowerManager powerManager = (PowerManager) context.getSystemService(Context.POWER_SERVICE);
-        TelecomManager telecomManager = (TelecomManager) context.getSystemService(Context.TELECOM_SERVICE);
-
-        if (telecomManager.isRinging()) {
-            IncomingCall();
-        }
-
         if (powerManager.isInteractive()) {
             screenTurnedOn();
         } else {
             screenTurnedOff();
         }
-
     }
 
     @Override
@@ -94,14 +83,6 @@ public class CMActionsService extends IntentService implements ScreenStateNotifi
         mState.setScreenIsOn(false);
         for (ActionableSensor actionableSensor : mActionableSensors) {
             actionableSensor.setScreenOff();
-        }
-    }
-
-    @Override
-    public void IncomingCall() {
-        mState.setCalling(true);
-        for (ActionableSensor actionableSensor : mActionableSensors) {
-            actionableSensor.setIncomingCall();
         }
     }
 

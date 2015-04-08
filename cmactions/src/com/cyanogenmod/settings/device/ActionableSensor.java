@@ -19,5 +19,4 @@ package com.cyanogenmod.settings.device;
 interface ActionableSensor {
     public void setScreenOn();
     public void setScreenOff();
-    public void setIncomingCall();
 }

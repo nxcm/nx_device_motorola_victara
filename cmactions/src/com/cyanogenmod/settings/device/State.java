@@ -31,7 +31,6 @@ public class State {
     private Context mContext;
 
     private boolean mScreenIsOn;
-    private boolean mCalling;
     private boolean mIsFlatUp;
     private boolean mIsStowed;
     private long mLastDoze;
@@ -48,12 +47,6 @@ public class State {
     public void setScreenIsOn(boolean screenIsOn) {
         mScreenIsOn = screenIsOn;
         Log.d(TAG, "Screen is " + (screenIsOn ? "ON" : "OFF"));
-        saveStateIfEnabled();
-    }
-
-    public void setCalling(boolean Calling) {
-        mCalling = Calling;
-        Log.d(TAG, "Calling is " + (Calling ? "ON" : "OFF"));
         saveStateIfEnabled();
     }
 
@@ -104,7 +97,6 @@ public class State {
             OutputStreamWriter writer = new OutputStreamWriter(out);
 
             writer.write("screenIsOn:     " + mScreenIsOn + "\n");
-            writer.write("Calling:        " + mCalling + "\n");
             writer.write("isFlatUp:       " + mIsFlatUp + "\n");
             writer.write("isStowed:       " + mIsStowed + "\n");
             writer.write("lastDoze:       " + mLastDoze + "\n");

@@ -51,10 +51,6 @@ public class StowSensor implements ActionableSensor, SensorEventListener {
     }
 
     @Override
-    public void setIncomingCall() {
-    }
-
-    @Override
     public void onSensorChanged(SensorEvent event) {
         boolean thisStowed = (event.values[0] != 0);
         Log.d(TAG, "event: " + thisStowed);
