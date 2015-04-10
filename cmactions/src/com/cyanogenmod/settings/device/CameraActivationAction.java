@@ -24,6 +24,7 @@ import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
+import android.content.SharedPreferences;
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
@@ -31,6 +32,7 @@ import android.hardware.SensorManager;
 import android.os.PowerManager;
 import android.os.PowerManager.WakeLock;
 import android.os.Vibrator;
+import android.preference.PreferenceManager;
 import android.provider.MediaStore;
 import android.util.Log;
 
@@ -38,23 +40,32 @@ public class CameraActivationAction implements SensorAction {
     private static final String TAG = "CMActions";
 
     private static final int TURN_SCREEN_ON_WAKE_LOCK_MS = 500;
+    private static final String GESTURE_CAMERA_KEY = "gesture_camera";
 
     private PowerManager mPowerManager;
     private PackageManager mPackageManager;
 
     private Context mContext;
 
+    private boolean mGestureCameraEnabled = true;
+
     public CameraActivationAction(Context context) {
         mContext = context;
         mPowerManager = (PowerManager) context.getSystemService(Context.POWER_SERVICE);
         mPackageManager = context.getPackageManager();
+
+        SharedPreferences sharedPrefs = PreferenceManager.getDefaultSharedPreferences(mContext);
+        loadPreferences(sharedPrefs);
+        sharedPrefs.registerOnSharedPreferenceChangeListener(mPrefListener);
     }
 
     @Override
     public void action() {
-        vibrate();
-        turnScreenOn();
-        launchCameraIntent();
+        if (mGestureCameraEnabled) {
+            vibrate();
+            turnScreenOn();
+            launchCameraIntent();
+        }
     }
 
     private void vibrate() {
@@ -81,4 +92,18 @@ public class CameraActivationAction implements SensorAction {
         }
         mContext.startActivity(intent);
     }
+
+    private void loadPreferences(SharedPreferences sharedPreferences) {
+        mGestureCameraEnabled = sharedPreferences.getBoolean(GESTURE_CAMERA_KEY, true);
+    }
+
+    private SharedPreferences.OnSharedPreferenceChangeListener mPrefListener =
+            new SharedPreferences.OnSharedPreferenceChangeListener() {
+        @Override
+        public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
+            if (GESTURE_CAMERA_KEY.equals(key)) {
+                mGestureCameraEnabled = sharedPreferences.getBoolean(GESTURE_CAMERA_KEY, true);
+            } 
+        }
+    };
 }

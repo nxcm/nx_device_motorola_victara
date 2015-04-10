@@ -16,6 +16,9 @@
 
 package com.cyanogenmod.settings.device;
 
+import android.content.Context;
+import android.content.SharedPreferences;
+import android.preference.PreferenceManager;
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
@@ -24,18 +27,29 @@ import android.util.Log;
 public class StowSensor implements ActionableSensor, SensorEventListener {
     private static final String TAG = "CMActions-StowSensor";
 
+    private static final String PICK_UP_KEY = "pick_up";
+
     private SensorHelper mSensorHelper;
     private State mState;
     private SensorAction mSensorAction;
 
     private Sensor mSensor;
 
-    public StowSensor(SensorHelper sensorHelper, State state, SensorAction action) {
+    private Context mContext;
+
+    private boolean mPickUpEnabled = true;
+
+    public StowSensor(Context context, SensorHelper sensorHelper, State state, SensorAction action) {
+        mContext = context;
         mSensorHelper = sensorHelper;
         mState = state;
         mSensorAction = action;
 
         mSensor = sensorHelper.getStowSensor();
+
+        SharedPreferences sharedPrefs = PreferenceManager.getDefaultSharedPreferences(mContext);
+        loadPreferences(sharedPrefs);
+        sharedPrefs.registerOnSharedPreferenceChangeListener(mPrefListener);
     }
 
     @Override
@@ -46,15 +60,20 @@ public class StowSensor implements ActionableSensor, SensorEventListener {
 
     @Override
     public void setScreenOff() {
-        Log.d(TAG, "Enabling");
-        mSensorHelper.registerListener(mSensor, this);
+        if (mPickUpEnabled) {
+            Log.d(TAG, "Enabling");
+            mSensorHelper.registerListener(mSensor, this);
+        } else {
+            Log.d(TAG, "Disabling");
+            mSensorHelper.unregisterListener(this);
+        }
     }
 
     @Override
     public void onSensorChanged(SensorEvent event) {
         boolean thisStowed = (event.values[0] != 0);
         Log.d(TAG, "event: " + thisStowed);
-        if (mState.setIsStowed(thisStowed) && ! thisStowed) {
+        if (mState.setIsStowed(thisStowed) && !thisStowed && mPickUpEnabled) {
             mSensorAction.action();
         }
     }
@@ -62,4 +81,18 @@ public class StowSensor implements ActionableSensor, SensorEventListener {
     @Override
     public void onAccuracyChanged(Sensor sensor, int accuracy) {
     }
+
+    private void loadPreferences(SharedPreferences sharedPreferences) {
+        mPickUpEnabled = sharedPreferences.getBoolean(PICK_UP_KEY, true);
+    }
+
+    private SharedPreferences.OnSharedPreferenceChangeListener mPrefListener =
+            new SharedPreferences.OnSharedPreferenceChangeListener() {
+        @Override
+        public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
+            if (PICK_UP_KEY.equals(key)) {
+                mPickUpEnabled = sharedPreferences.getBoolean(PICK_UP_KEY, true);
+            } 
+        }
+    };
 }

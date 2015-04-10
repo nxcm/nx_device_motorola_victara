@@ -16,6 +16,9 @@
 
 package com.cyanogenmod.settings.device;
 
+import android.content.Context;
+import android.content.SharedPreferences;
+import android.preference.PreferenceManager;
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
@@ -24,18 +27,29 @@ import android.util.Log;
 public class FlatUpSensor implements ActionableSensor, SensorEventListener {
     private static final String TAG = "CMActions-FlatUpSensor";
 
+    private static final String PICK_UP_KEY = "pick_up";
+
     private SensorHelper mSensorHelper;
     private State mState;
     private SensorAction mSensorAction;
 
     private Sensor mSensor;
 
-    public FlatUpSensor(SensorHelper sensorHelper, State state, SensorAction action) {
+    private Context mContext;
+
+    private boolean mPickUpEnabled = true;
+
+    public FlatUpSensor(Context context, SensorHelper sensorHelper, State state, SensorAction action) {
+        mContext = context;
         mSensorHelper = sensorHelper;
         mState = state;
         mSensorAction = action;
 
         mSensor = sensorHelper.getFlatUpSensor();
+
+        SharedPreferences sharedPrefs = PreferenceManager.getDefaultSharedPreferences(mContext);
+        loadPreferences(sharedPrefs);
+        sharedPrefs.registerOnSharedPreferenceChangeListener(mPrefListener);
     }
 
     @Override
@@ -46,8 +60,13 @@ public class FlatUpSensor implements ActionableSensor, SensorEventListener {
 
     @Override
     public void setScreenOff() {
-        Log.d(TAG, "Enabling");
-        mSensorHelper.registerListener(mSensor, this);
+        if (mPickUpEnabled) {
+            Log.d(TAG, "Enabling");
+            mSensorHelper.registerListener(mSensor, this);
+        } else {
+            Log.d(TAG, "Disabling");
+            mSensorHelper.unregisterListener(this);
+        }
     }
 
     @Override
@@ -59,7 +78,7 @@ public class FlatUpSensor implements ActionableSensor, SensorEventListener {
         Log.d(TAG, "event: " + thisFlatUp + " lastFlatUp=" + lastFlatUp + " isStowed=" + isStowed);
 
         // Only pulse when picked up:
-        if (lastFlatUp && ! thisFlatUp && !isStowed) {
+        if (lastFlatUp && !thisFlatUp && !isStowed && mPickUpEnabled) {
             mSensorAction.action();
         }
     }
@@ -67,4 +86,18 @@ public class FlatUpSensor implements ActionableSensor, SensorEventListener {
     @Override
     public void onAccuracyChanged(Sensor mSensor, int accuracy) {
     }
+
+    private void loadPreferences(SharedPreferences sharedPreferences) {
+        mPickUpEnabled = sharedPreferences.getBoolean(PICK_UP_KEY, true);
+    }
+
+    private SharedPreferences.OnSharedPreferenceChangeListener mPrefListener =
+            new SharedPreferences.OnSharedPreferenceChangeListener() {
+        @Override
+        public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
+            if (PICK_UP_KEY.equals(key)) {
+                mPickUpEnabled = sharedPreferences.getBoolean(PICK_UP_KEY, true);
+            } 
+        }
+    };
 }
