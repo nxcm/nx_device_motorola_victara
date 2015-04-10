@@ -33,25 +33,23 @@ import android.os.PowerManager.WakeLock;
 import android.provider.MediaStore;
 import android.util.Log;
 
-public class CameraActivationSensor implements ActionableSensor, SensorEventListener {
-    private static final String TAG = "CMActions-CameraSensor";
-
-    private static final int TURN_SCREEN_ON_WAKE_LOCK_MS = 500;
+public class FlashlightActivationSensor implements ActionableSensor, SensorEventListener {
+    private static final String TAG = "CMActions-FlashlightSensor";
 
     private SensorHelper mSensorHelper;
     private SensorAction mSensorAction;
 
-    private Sensor mCameraActivationSensor;
+    private Sensor mChopChopSensor;
 
     private Context mContext;
 
-    public CameraActivationSensor(SensorHelper sensorHelper, SensorAction sensorAction) {
+    public FlashlightActivationSensor(SensorHelper sensorHelper, SensorAction sensorAction) {
         mSensorHelper = sensorHelper;
         mSensorAction = sensorAction;
-        mCameraActivationSensor = sensorHelper.getCameraActivationSensor();
+        mChopChopSensor = sensorHelper.getChopChopSensor();
 
         Log.d(TAG, "Enabling");
-        mSensorHelper.registerListener(mCameraActivationSensor, this);
+        mSensorHelper.registerListener(mChopChopSensor, this);
     }
 
     @Override
@@ -64,7 +62,7 @@ public class CameraActivationSensor implements ActionableSensor, SensorEventList
 
     @Override
     public void onSensorChanged(SensorEvent event) {
-        Log.d(TAG, "activate camera");
+        Log.d(TAG, "activate flashlight");
         mSensorAction.action();
     }
 

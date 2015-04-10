@@ -30,6 +30,9 @@
     <string name="gesture_ir_silence_summary">Wave to silence calls and snooze alarms</string>
 
     <string name="camera_gesture_title">Twist for Quick Capture</string>
-    <string name="camera_gesture_summary">Open the camera at any time by twisting your wrist twice</string>
+    <string name="camera_gesture_summary">Twist your wrist twice quickly to open camera anytime</string>
+
+    <string name="flashlight_gesture_title">Chop twice for flashlight</string>
+    <string name="flashlight_gesture_summary">Make a chopping motion to turn flashlight on/off</string>
 
 </resources>

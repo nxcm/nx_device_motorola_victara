@@ -35,6 +35,7 @@ public class CMActionsService extends IntentService implements ScreenStateNotifi
     private IrGestureManager mIrGestureManager;
 
     private CameraActivationAction mCameraActivationAction;
+    private FlashlightActivationAction mFlashlightActivationAction;
     private DozePulseAction mDozePulseAction;
 
     private List<ActionableSensor> mActionableSensors = new LinkedList<ActionableSensor>();
@@ -56,9 +57,11 @@ public class CMActionsService extends IntentService implements ScreenStateNotifi
         mIrGestureManager = new IrGestureManager();
 
         mCameraActivationAction = new CameraActivationAction(context);
+        mFlashlightActivationAction = new FlashlightActivationAction(context);
         mDozePulseAction = new DozePulseAction(context, mState);
 
         mActionableSensors.add(new CameraActivationSensor(mSensorHelper, mCameraActivationAction));
+        mActionableSensors.add(new FlashlightActivationSensor(mSensorHelper, mFlashlightActivationAction));
         mActionableSensors.add(new FlatUpSensor(context, mSensorHelper, mState, mDozePulseAction));
         mActionableSensors.add(new IrGestureSensor(context, mSensorHelper, mDozePulseAction, mIrGestureManager));
         mActionableSensors.add(new StowSensor(context, mSensorHelper, mState, mDozePulseAction));
