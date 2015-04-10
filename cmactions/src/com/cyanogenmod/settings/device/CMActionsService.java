@@ -40,6 +40,7 @@ public class CMActionsService extends IntentService implements ScreenStateNotifi
     private List<ActionableSensor> mActionableSensors = new LinkedList<ActionableSensor>();
 
     private IrSilencer mIrSilencer;
+    private AlarmSilencer mAlarmSilencer;
 
     private Context mContext;
 
@@ -63,6 +64,7 @@ public class CMActionsService extends IntentService implements ScreenStateNotifi
         mActionableSensors.add(new StowSensor(context, mSensorHelper, mState, mDozePulseAction));
 
         mIrSilencer = new IrSilencer(context, mSensorHelper, mIrGestureManager);
+        mAlarmSilencer = new AlarmSilencer(context, mSensorHelper, mIrGestureManager);
 
         PowerManager powerManager = (PowerManager) context.getSystemService(Context.POWER_SERVICE);
         if (powerManager.isInteractive()) {
