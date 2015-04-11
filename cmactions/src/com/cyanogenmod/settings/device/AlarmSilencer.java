@@ -31,10 +31,10 @@ import android.util.Log;
 import static com.cyanogenmod.settings.device.IrGestureManager.*;
 
 public class AlarmSilencer extends Activity implements SensorEventListener {
-    private static final String TAG = "CMActions-IRSilencer";
+    private static final String TAG = "CMActions-AlarmSilencer";
 
     private static final int IR_GESTURES_FOR_ALARM = (1 << IR_GESTURE_SWIPE);
-    private static final String ALARM_SILENCE_KEY = "gesture_ir";
+    private static final String ALARM_SILENCE_KEY = "gesture_ir_silence";
 
     public static final String ALARM_ALERT_ACTION = "com.android.deskclock.ALARM_ALERT";
     public static final String ALARM_SNOOZE_ACTION = "com.android.deskclock.ALARM_SNOOZE";
