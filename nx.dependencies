@@ -1,0 +1,19 @@
+[
+  {
+    "remote":      "github",
+    "repository": "CyanogenMod/android_device_qcom_common",
+    "target_path": "device/qcom/common",
+    "revision":   "cm-12.1"
+  },
+  {
+    "remote":     "bitbucket",
+    "repository": "nxcm/nx_kernel_motorola_msm8974",
+    "target_path": "kernel/motorola/msm8974"
+  },
+  {
+    "remote":      "github",
+    "repository":  "TheMuppets/proprietary_vendor_motorola",
+    "target_path": "vendor/motorola",
+    "revision":   "cm-12.1"
+  }
+]
