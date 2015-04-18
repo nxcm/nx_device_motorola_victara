@@ -29,7 +29,7 @@ import static com.cyanogenmod.settings.device.IrGestureManager.*;
 public class IrGestureSensor implements ActionableSensor, SensorEventListener {
     private static final String TAG = "CMActions-IRGestureSensor";
 
-    private static final int IR_GESTURES_FOR_SCREEN_OFF = (1 << IR_GESTURE_SWIPE) | (1 << IR_GESTURE_APPROACH);
+    private static final int IR_GESTURES_FOR_SCREEN_OFF = (1 << IR_GESTURE_APPROACH);
     private static final String GESTURE_IR_KEY = "gesture_ir";
 
     private SensorHelper mSensorHelper;
@@ -80,7 +80,7 @@ public class IrGestureSensor implements ActionableSensor, SensorEventListener {
     public void onSensorChanged(SensorEvent event) {
         int gesture = (int) event.values[1];
 
-        if ((gesture == IR_GESTURE_SWIPE || gesture == IR_GESTURE_APPROACH) && mGestureIrEnabled) {
+        if ((gesture == IR_GESTURE_APPROACH) && mGestureIrEnabled) {
             Log.d(TAG, "event: [" + event.values.length + "]: " + event.values[0] + ", " +
                 event.values[1] + ", " + event.values[2]);
             mSensorAction.action();
