@@ -16,7 +16,7 @@
 
     <application
         android:allowBackup="true"
-        android:label="CMActions"
+        android:label="NXActions"
         android:persistent="true"
         android:theme="@style/AppTheme" >
 
@@ -35,8 +35,8 @@
 
         <activity
                   android:excludeFromRecents="true"
-                  android:name="CMActions"
-                  android:label="CMActions"
+                  android:name="NXActions"
+                  android:label="NXActions"
                   android:launchMode="singleInstance">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

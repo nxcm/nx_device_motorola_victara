@@ -49,7 +49,7 @@ public class IrGestureManager {
 
     static
     {
-       System.load("/system/lib/libjni_CMActions.so");
+       System.load("/system/lib/libjni_NXActions.so");
     }
 
     public IrGestureManager() {
