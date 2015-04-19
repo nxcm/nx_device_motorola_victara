@@ -50,8 +50,9 @@ PRODUCT_COPY_FILES += \
 
 # System Properties
 PRODUCT_DEFAULT_PROPERTY_OVERRIDES += \
-    persist.sys.usb.config=mtp \
-    ro.build.characteristics=nosdcard
+    persist.sys.usb.config=mtp
+
+PRODUCT_CHARACTERISTICS := nosdcard
 
 # Screen density
 PRODUCT_AAPT_CONFIG := normal hdpi xhdpi
