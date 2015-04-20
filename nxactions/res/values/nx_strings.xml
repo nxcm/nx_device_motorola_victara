@@ -20,9 +20,6 @@
     <string name="screen_gestures_panel_title">Gestures</string>
     <string name="screen_gestures_panel_summary">Use gestures to perform actions</string>
 
-    <string name="attentive_display_title">Attentive Display</string>
-    <string name="attentive_display_summary">Screen will not dim or sleep while you\u0027re looking</string>
-
     <string name="pick_up_gesture_title">Pick up</string>
     <string name="pick_up_gesture_summary">Pulse notifications when you pick up device</string>
 

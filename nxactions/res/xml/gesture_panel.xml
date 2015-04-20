@@ -29,12 +29,6 @@
         android:summary="@string/gesture_ir_summary" />
 
     <SwitchPreference
-        android:key="gesture_attentive_display"
-        android:defaultValue="false"
-        android:title="@string/attentive_display_title"
-        android:summary="@string/attentive_display_summary" />
-
-    <SwitchPreference
         android:key="gesture_ir_silence"
         android:defaultValue="true"
         android:title="@string/gesture_ir_silence_title"
