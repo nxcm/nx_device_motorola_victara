@@ -54,7 +54,7 @@ public class AlarmSilencer extends Activity implements SensorEventListener {
         mSensorHelper = sensorHelper;
         mSensor = sensorHelper.getIrGestureSensor();
         mIrGestureVote = new IrGestureVote(irGestureManager);
-        mIrGestureVote.voteForState(false, 0);
+        mIrGestureVote.voteForSensors(0);
 
         SharedPreferences sharedPrefs = PreferenceManager.getDefaultSharedPreferences(mContext);
         loadPreferences(sharedPrefs);
@@ -71,18 +71,18 @@ public class AlarmSilencer extends Activity implements SensorEventListener {
         if (mAlarmSilenceEnabled) {
             Log.d(TAG, "Alarm started");
             mSensorHelper.registerListener(mSensor, this);
-            mIrGestureVote.voteForState(true, IR_GESTURES_FOR_ALARM);
+            mIrGestureVote.voteForSensors(IR_GESTURES_FOR_ALARM);
         } else {
             Log.d(TAG, "Alarm stopped");
             mSensorHelper.unregisterListener(this);
-            mIrGestureVote.voteForState(false, 0);
+            mIrGestureVote.voteForSensors(0);
         }
     }
 
     public void onAlarmStateOff() {
         Log.d(TAG, "Alarm stopped");
         mSensorHelper.unregisterListener(this);
-        mIrGestureVote.voteForState(false, 0);
+        mIrGestureVote.voteForSensors(0);
     }
 
     @Override

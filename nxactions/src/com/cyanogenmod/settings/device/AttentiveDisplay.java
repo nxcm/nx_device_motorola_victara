@@ -67,7 +67,7 @@ public class AttentiveDisplay implements ActionableSensor {
 
         mIrGestureSensor = sensorHelper.getIrGestureSensor();
         mStowSensor = sensorHelper.getStowSensor();
-        mIrGestureVote.voteForState(false, 0);
+        mIrGestureVote.voteForSensors(0);
 
         SharedPreferences sharedPrefs = PreferenceManager.getDefaultSharedPreferences(mContext);
         loadPreferences(sharedPrefs);
@@ -102,7 +102,7 @@ public class AttentiveDisplay implements ActionableSensor {
 
             mSensorHelper.registerListener(mIrGestureSensor, mIrGestureListener);
             mSensorHelper.registerListener(mStowSensor, mStowListener);
-            mIrGestureVote.voteForState(true, IR_GESTURES_FOR_SCREEN_ON);
+            mIrGestureVote.voteForSensors(IR_GESTURES_FOR_SCREEN_ON);
 
         }
     }
@@ -112,7 +112,7 @@ public class AttentiveDisplay implements ActionableSensor {
             Log.d(TAG, "Disabling");
             mSensorHelper.unregisterListener(mStowListener);
             mSensorHelper.unregisterListener(mIrGestureListener);
-            mIrGestureVote.voteForState(false, IR_GESTURES_FOR_SCREEN_OFF);
+            mIrGestureVote.voteForSensors(IR_GESTURES_FOR_SCREEN_OFF);
             mEnabled = false;
         }
     }

@@ -49,7 +49,7 @@ public class IrGestureSensor implements ActionableSensor, SensorEventListener {
         mIrGestureVote = new IrGestureVote(irGestureManager);
 
         mSensor = sensorHelper.getIrGestureSensor();
-        mIrGestureVote.voteForState(false, 0);
+        mIrGestureVote.voteForSensors(0);
 
         SharedPreferences sharedPrefs = PreferenceManager.getDefaultSharedPreferences(mContext);
         loadPreferences(sharedPrefs);
@@ -60,7 +60,7 @@ public class IrGestureSensor implements ActionableSensor, SensorEventListener {
     public void setScreenOn() {
         Log.d(TAG, "Disabling");
         mSensorHelper.unregisterListener(this);
-        mIrGestureVote.voteForState(false, 0);
+        mIrGestureVote.voteForSensors(0);
     }
 
     @Override
@@ -68,11 +68,11 @@ public class IrGestureSensor implements ActionableSensor, SensorEventListener {
         if (mGestureIrEnabled) {
             Log.d(TAG, "Enabling");
             mSensorHelper.registerListener(mSensor, this);
-            mIrGestureVote.voteForState(true, IR_GESTURES_FOR_SCREEN_OFF);
+            mIrGestureVote.voteForSensors(IR_GESTURES_FOR_SCREEN_OFF);
         } else {
             Log.d(TAG, "Disabling");
             mSensorHelper.unregisterListener(this);
-            mIrGestureVote.voteForState(false, 0);
+            mIrGestureVote.voteForSensors(0);
         }
     }
 
