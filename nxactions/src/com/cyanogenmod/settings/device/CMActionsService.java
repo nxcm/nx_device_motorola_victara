@@ -38,7 +38,7 @@ public class CMActionsService extends IntentService implements ScreenStateNotifi
     private FlashlightActivationAction mFlashlightActivationAction;
     private DozePulseAction mDozePulseAction;
 
-    private List<ActionableSensor> mActionableSensors = new LinkedList<ActionableSensor>();
+    private List<ScreenStateNotifier> mScreenStateNotifiers = new LinkedList<ScreenStateNotifier>();
 
     private IrSilencer mIrSilencer;
     private AlarmSilencer mAlarmSilencer;
@@ -60,11 +60,11 @@ public class CMActionsService extends IntentService implements ScreenStateNotifi
         mFlashlightActivationAction = new FlashlightActivationAction(context);
         mDozePulseAction = new DozePulseAction(context, mState);
 
-        mActionableSensors.add(new CameraActivationSensor(mSensorHelper, mCameraActivationAction));
-        mActionableSensors.add(new FlashlightActivationSensor(mSensorHelper, mFlashlightActivationAction));
-        mActionableSensors.add(new FlatUpSensor(context, mSensorHelper, mState, mDozePulseAction));
-        mActionableSensors.add(new IrGestureSensor(context, mSensorHelper, mDozePulseAction, mIrGestureManager));
-        mActionableSensors.add(new StowSensor(context, mSensorHelper, mState, mDozePulseAction));
+        mScreenStateNotifiers.add(new CameraActivationSensor(mSensorHelper, mCameraActivationAction));
+        mScreenStateNotifiers.add(new FlashlightActivationSensor(mSensorHelper, mFlashlightActivationAction));
+        mScreenStateNotifiers.add(new FlatUpSensor(context, mSensorHelper, mState, mDozePulseAction));
+        mScreenStateNotifiers.add(new IrGestureSensor(context, mSensorHelper, mDozePulseAction, mIrGestureManager));
+        mScreenStateNotifiers.add(new StowSensor(context, mSensorHelper, mState, mDozePulseAction));
 
         mIrSilencer = new IrSilencer(context, mSensorHelper, mIrGestureManager);
         mAlarmSilencer = new AlarmSilencer(context, mSensorHelper, mIrGestureManager);
@@ -84,16 +84,16 @@ public class CMActionsService extends IntentService implements ScreenStateNotifi
     @Override
     public void screenTurnedOn() {
         mState.setScreenIsOn(true);
-        for (ActionableSensor actionableSensor : mActionableSensors) {
-            actionableSensor.setScreenOn();
+        for (ScreenStateNotifier screenStateNotifier : mScreenStateNotifiers) {
+            screenStateNotifier.screenTurnedOn();
         }
     }
 
     @Override
     public void screenTurnedOff() {
         mState.setScreenIsOn(false);
-        for (ActionableSensor actionableSensor : mActionableSensors) {
-            actionableSensor.setScreenOff();
+        for (ScreenStateNotifier screenStateNotifier : mScreenStateNotifiers) {
+            screenStateNotifier.screenTurnedOff();
         }
     }
 

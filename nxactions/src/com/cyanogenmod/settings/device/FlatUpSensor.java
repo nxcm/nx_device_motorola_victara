@@ -24,7 +24,7 @@ import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.util.Log;
 
-public class FlatUpSensor implements ActionableSensor, SensorEventListener {
+public class FlatUpSensor implements ScreenStateNotifier, SensorEventListener {
     private static final String TAG = "CMActions-FlatUpSensor";
 
     private static final String PICK_UP_KEY = "pick_up";
@@ -53,13 +53,13 @@ public class FlatUpSensor implements ActionableSensor, SensorEventListener {
     }
 
     @Override
-    public void setScreenOn() {
+    public void screenTurnedOn() {
         Log.d(TAG, "Disabling");
         mSensorHelper.unregisterListener(this);
     }
 
     @Override
-    public void setScreenOff() {
+    public void screenTurnedOff() {
         if (mPickUpEnabled) {
             Log.d(TAG, "Enabling");
             mSensorHelper.registerListener(mSensor, this);

@@ -33,7 +33,7 @@ import android.os.PowerManager.WakeLock;
 import android.provider.MediaStore;
 import android.util.Log;
 
-public class FlashlightActivationSensor implements ActionableSensor, SensorEventListener {
+public class FlashlightActivationSensor implements ScreenStateNotifier, SensorEventListener {
     private static final String TAG = "CMActions-FlashlightSensor";
 
     private SensorHelper mSensorHelper;
@@ -53,11 +53,11 @@ public class FlashlightActivationSensor implements ActionableSensor, SensorEvent
     }
 
     @Override
-    public void setScreenOn() {
+    public void screenTurnedOn() {
     }
 
     @Override
-    public void setScreenOff() {
+    public void screenTurnedOff() {
     }
 
     @Override

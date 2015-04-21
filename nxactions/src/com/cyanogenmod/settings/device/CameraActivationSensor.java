@@ -33,7 +33,7 @@ import android.os.PowerManager.WakeLock;
 import android.provider.MediaStore;
 import android.util.Log;
 
-public class CameraActivationSensor implements ActionableSensor, SensorEventListener {
+public class CameraActivationSensor implements ScreenStateNotifier, SensorEventListener {
     private static final String TAG = "CMActions-CameraSensor";
 
     private static final int TURN_SCREEN_ON_WAKE_LOCK_MS = 500;
@@ -55,11 +55,11 @@ public class CameraActivationSensor implements ActionableSensor, SensorEventList
     }
 
     @Override
-    public void setScreenOn() {
+    public void screenTurnedOn() {
     }
 
     @Override
-    public void setScreenOff() {
+    public void screenTurnedOff() {
     }
 
     @Override
