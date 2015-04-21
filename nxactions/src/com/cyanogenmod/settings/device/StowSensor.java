@@ -30,19 +30,19 @@ public class StowSensor implements ScreenStateNotifier, SensorEventListener {
     private static final String PICK_UP_KEY = "pick_up";
 
     private SensorHelper mSensorHelper;
-    private State mState;
     private SensorAction mSensorAction;
 
     private Sensor mSensor;
+
+    private boolean mLastStowed;
 
     private Context mContext;
 
     private boolean mPickUpEnabled = true;
 
-    public StowSensor(Context context, SensorHelper sensorHelper, State state, SensorAction action) {
+    public StowSensor(Context context, SensorHelper sensorHelper, SensorAction action) {
         mContext = context;
         mSensorHelper = sensorHelper;
-        mState = state;
         mSensorAction = action;
 
         mSensor = sensorHelper.getStowSensor();
@@ -73,9 +73,10 @@ public class StowSensor implements ScreenStateNotifier, SensorEventListener {
     public void onSensorChanged(SensorEvent event) {
         boolean thisStowed = (event.values[0] != 0);
         Log.d(TAG, "event: " + thisStowed);
-        if (mState.setIsStowed(thisStowed) && !thisStowed && mPickUpEnabled) {
+        if (mLastStowed && !thisStowed && mPickUpEnabled) {
             mSensorAction.action();
         }
+        mLastStowed = thisStowed;
     }
 
     @Override

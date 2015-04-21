@@ -29,7 +29,6 @@ import java.util.LinkedList;
 public class CMActionsService extends IntentService implements ScreenStateNotifier {
     private static final String TAG = "CMActions";
 
-    private State mState;
     private SensorHelper mSensorHelper;
     private ScreenReceiver mScreenReceiver;
     private IrGestureManager mIrGestureManager;
@@ -51,20 +50,20 @@ public class CMActionsService extends IntentService implements ScreenStateNotifi
 
         Log.d(TAG, "Starting");
 
-        mState = new State(context);
         mSensorHelper = new SensorHelper(context);
         mScreenReceiver = new ScreenReceiver(context, this);
         mIrGestureManager = new IrGestureManager();
 
         mCameraActivationAction = new CameraActivationAction(context);
         mFlashlightActivationAction = new FlashlightActivationAction(context);
-        mDozePulseAction = new DozePulseAction(context, mState);
+        mDozePulseAction = new DozePulseAction(context);
+        mScreenStateNotifiers.add(mDozePulseAction);
 
         mScreenStateNotifiers.add(new CameraActivationSensor(mSensorHelper, mCameraActivationAction));
         mScreenStateNotifiers.add(new FlashlightActivationSensor(mSensorHelper, mFlashlightActivationAction));
-        mScreenStateNotifiers.add(new FlatUpSensor(context, mSensorHelper, mState, mDozePulseAction));
+        mScreenStateNotifiers.add(new FlatUpSensor(context, mSensorHelper, mDozePulseAction));
         mScreenStateNotifiers.add(new IrGestureSensor(context, mSensorHelper, mDozePulseAction, mIrGestureManager));
-        mScreenStateNotifiers.add(new StowSensor(context, mSensorHelper, mState, mDozePulseAction));
+        mScreenStateNotifiers.add(new StowSensor(context, mSensorHelper, mDozePulseAction));
 
         mIrSilencer = new IrSilencer(context, mSensorHelper, mIrGestureManager);
         mAlarmSilencer = new AlarmSilencer(context, mSensorHelper, mIrGestureManager);
@@ -83,7 +82,6 @@ public class CMActionsService extends IntentService implements ScreenStateNotifi
 
     @Override
     public void screenTurnedOn() {
-        mState.setScreenIsOn(true);
         for (ScreenStateNotifier screenStateNotifier : mScreenStateNotifiers) {
             screenStateNotifier.screenTurnedOn();
         }
@@ -91,7 +89,6 @@ public class CMActionsService extends IntentService implements ScreenStateNotifi
 
     @Override
     public void screenTurnedOff() {
-        mState.setScreenIsOn(false);
         for (ScreenStateNotifier screenStateNotifier : mScreenStateNotifiers) {
             screenStateNotifier.screenTurnedOff();
         }
