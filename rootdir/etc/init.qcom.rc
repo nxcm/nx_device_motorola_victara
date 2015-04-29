@@ -698,11 +698,54 @@ on property:sys.boot_completed=1
     write /sys/devices/system/cpu/cpufreq/interactive/timer_slack 30000
     write /dev/cpuctl/apps/cpu.notify_on_migrate 1
 
+    # Smartmax NX Governor
+
+    chown system system /sys/devices/system/cpu/cpufreq/smartmax/awake_ideal_freq
+    chmod 0660 /sys/devices/system/cpu/cpufreq/smartmax/awake_ideal_freq
+    chown system system /sys/devices/system/cpu/cpufreq/smartmax/boost_duration
+    chmod 0660 /sys/devices/system/cpu/cpufreq/smartmax/boost_duration
+    chown system system /sys/devices/system/cpu/cpufreq/smartmax/boost_freq
+    chmod 0660 /sys/devices/system/cpu/cpufreq/smartmax/boost_freq
+    chown system system /sys/devices/system/cpu/cpufreq/smartmax/boostpulse_duration
+    chmod 0660 /sys/devices/system/cpu/cpufreq/smartmax/boostpulse_duration
+    chown system system /sys/devices/system/cpu/cpufreq/smartmax/debug_mask
+    chmod 0660 /sys/devices/system/cpu/cpufreq/smartmax/debug_mask
+    chown system system /sys/devices/system/cpu/cpufreq/smartmax/down_rate
+    chmod 0660 /sys/devices/system/cpu/cpufreq/smartmax/down_rate
+    chown system system /sys/devices/system/cpu/cpufreq/smartmax/ignore_nice
+    chmod 0660 /sys/devices/system/cpu/cpufreq/smartmax/ignore_nice
+    chown system system /sys/devices/system/cpu/cpufreq/smartmax/input_boost_duration
+    chmod 0660 /sys/devices/system/cpu/cpufreq/smartmax/input_boost_duration
+    chown system system /sys/devices/system/cpu/cpufreq/smartmax/input_boost_freq
+    chmod 0660 /sys/devices/system/cpu/cpufreq/smartmax/input_boost_freq
+    chown system system /sys/devices/system/cpu/cpufreq/smartmax/io_is_busy
+    chmod 0660 /sys/devices/system/cpu/cpufreq/smartmax/io_is_busy
+    chown system system /sys/devices/system/cpu/cpufreq/smartmax/max_cpu_load
+    chmod 0220 /sys/devices/system/cpu/cpufreq/smartmax/max_cpu_load
+    chown system system /sys/devices/system/cpu/cpufreq/smartmax/min_cpu_load
+    chmod 0660 /sys/devices/system/cpu/cpufreq/smartmax/min_cpu_load
+    chown system system /sys/devices/system/cpu/cpufreq/smartmax/min_sampling_rate
+    chmod 0660 /sys/devices/system/cpu/cpufreq/smartmax/min_sampling_rate
+    chown system system /sys/devices/system/cpu/cpufreq/smartmax/ramp_down_step
+    chmod 0660 /sys/devices/system/cpu/cpufreq/smartmax/ramp_down_step
+    chown system system /sys/devices/system/cpu/cpufreq/smartmax/ramp_up_during_boost
+    chmod 0660 /sys/devices/system/cpu/cpufreq/smartmax/ramp_up_during_boost
+    chown system system /sys/devices/system/cpu/cpufreq/smartmax/ramp_up_step
+    chmod 0660 /sys/devices/system/cpu/cpufreq/smartmax/ramp_up_step
+    chown system system /sys/devices/system/cpu/cpufreq/smartmax/sampling_rate
+    chmod 0660 /sys/devices/system/cpu/cpufreq/smartmax/sampling_rate
+    chown system system /sys/devices/system/cpu/cpufreq/smartmax/suspend_ideal_freq
+    chmod 0660 /sys/devices/system/cpu/cpufreq/smartmax/suspend_ideal_freq
+    chown system system /sys/devices/system/cpu/cpufreq/smartmax/touch_poke_freq
+    chmod 0660 /sys/devices/system/cpu/cpufreq/smartmax/touch_poke_freq
+    chown system system /sys/devices/system/cpu/cpufreq/smartmax/up_rate
+    chmod 0660 /sys/devices/system/cpu/cpufreq/smartmax/up_rate
+
     # CPU Boost driver
 
     # write /sys/module/cpu_boost/parameters/boost_ms 20
-    write /sys/module/cpu_boost/parameters/sync_threshold 1728000
-    write /sys/module/cpu_boost/parameters/input_boost_freq 1497600
+    write /sys/module/cpu_boost/parameters/sync_threshold 1497600
+    write /sys/module/cpu_boost/parameters/input_boost_freq 1190400
     write /sys/module/cpu_boost/parameters/input_boost_ms 500
 
     # mpdecision
