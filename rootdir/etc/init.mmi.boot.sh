@@ -158,3 +158,6 @@ if [ -e /dev/vfsspi ]
 then
 	setprop ro.mot.hw.fingerprint 1
 fi
+
+# funny and creative trick to fix clock reset
+sleep 60; cp /data/time/ats_13 /data/time/ats_1
