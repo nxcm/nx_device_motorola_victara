@@ -43,7 +43,7 @@ public class VibratorHW {
     }
 
     public static int getDefaultIntensity()  {
-        return getMaxIntensity();
+        return 63;
     }
 
     public static boolean setIntensity(int intensity)  {
