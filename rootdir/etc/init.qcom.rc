@@ -1049,10 +1049,6 @@ on property:sys.perf.profile=0
     write /sys/devices/system/cpu/cpu1/cpufreq/scaling_max_freq 1190400
     write /sys/devices/system/cpu/cpu2/cpufreq/scaling_max_freq 1190400
     write /sys/devices/system/cpu/cpu3/cpufreq/scaling_max_freq 1190400
-    write /sys/kernel/msm_limiter/resume_max_freq_0 1190400
-    write /sys/kernel/msm_limiter/resume_max_freq_1 1190400
-    write /sys/kernel/msm_limiter/resume_max_freq_2 1190400
-    write /sys/kernel/msm_limiter/resume_max_freq_3 1190400
     write /sys/class/kgsl/kgsl-3d0/devfreq/governor powersave
     write /sys/module/msm_hotplug/max_cpus_online 2
 
@@ -1070,10 +1066,6 @@ on property:sys.perf.profile=1
     write /sys/devices/system/cpu/cpu1/cpufreq/scaling_max_freq 2457600
     write /sys/devices/system/cpu/cpu2/cpufreq/scaling_max_freq 2457600
     write /sys/devices/system/cpu/cpu3/cpufreq/scaling_max_freq 2457600
-    write /sys/kernel/msm_limiter/resume_max_freq_0 2457600
-    write /sys/kernel/msm_limiter/resume_max_freq_1 2457600
-    write /sys/kernel/msm_limiter/resume_max_freq_2 2457600
-    write /sys/kernel/msm_limiter/resume_max_freq_3 2457600
     write /sys/class/kgsl/kgsl-3d0/devfreq/governor msm-adreno-tz
     write /sys/module/msm_hotplug/max_cpus_online 4
 
@@ -1095,9 +1087,5 @@ on property:sys.perf.profile=2
     write /sys/devices/system/cpu/cpu1/cpufreq/scaling_max_freq 2457600
     write /sys/devices/system/cpu/cpu2/cpufreq/scaling_max_freq 2457600
     write /sys/devices/system/cpu/cpu3/cpufreq/scaling_max_freq 2457600
-    write /sys/kernel/msm_limiter/resume_max_freq_0 2457600
-    write /sys/kernel/msm_limiter/resume_max_freq_1 2457600
-    write /sys/kernel/msm_limiter/resume_max_freq_2 2457600
-    write /sys/kernel/msm_limiter/resume_max_freq_3 2457600
     write /sys/class/kgsl/kgsl-3d0/devfreq/governor performance
     write /sys/module/msm_hotplug/max_cpus_online 4
