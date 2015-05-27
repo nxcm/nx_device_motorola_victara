@@ -1051,7 +1051,7 @@ on property:sys.perf.profile=0
     write /sys/module/cpu_boost/parameters/sync_threshold 1190400
     write /sys/module/cpu_boost/parameters/input_boost_freq 729600
     write /sys/class/kgsl/kgsl-3d0/devfreq/governor powersave
-    write /sys/class/misc/mako_hotplug_control/load_threshold 100
+    write /sys/module/msm_hotplug/max_cpus_online 2
 
 # Balanced
 on property:sys.perf.profile=1
@@ -1070,7 +1070,7 @@ on property:sys.perf.profile=1
     write /sys/module/cpu_boost/parameters/sync_threshold 1574400
     write /sys/module/cpu_boost/parameters/input_boost_freq 1190400
     write /sys/class/kgsl/kgsl-3d0/devfreq/governor msm-adreno-tz
-    write /sys/class/misc/mako_hotplug_control/load_threshold 80
+    write /sys/module/msm_hotplug/max_cpus_online 4
 
 # High performance
 on property:sys.perf.profile=2
@@ -1093,4 +1093,4 @@ on property:sys.perf.profile=2
     write /sys/module/cpu_boost/parameters/sync_threshold 2457600
     write /sys/module/cpu_boost/parameters/input_boost_freq 2457600
     write /sys/class/kgsl/kgsl-3d0/devfreq/governor performance
-    write /sys/class/misc/mako_hotplug_control/load_threshold 0
+    write /sys/module/msm_hotplug/max_cpus_online 4
