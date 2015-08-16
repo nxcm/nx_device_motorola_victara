@@ -96,3 +96,8 @@ av.offload.enable=true
 av.streaming.offload.enable=true
 audio.offload.multiple.enabled=false
 audio.offload.gapless.enabled=true
+audio.offload.pcm.16bit.enable=true
+audio.offload.pcm.24bit.enable=true
+
+# Play store
+ro.com.google.clientidbase.gmm=android-motorola
