@@ -47,6 +47,7 @@ void vendor_load_properties()
     property_get("ro.boot.carrier", carrier);
 
     property_set("ro.build.product", "victara");
+    property_set("ro.build.device", "victara");
     property_set("ro.product.device", "victara");
 
     if (strstr(carrier, "vzw")) {
@@ -59,8 +60,15 @@ void vendor_load_properties()
         property_set("ro.com.google.clientidbase.am", "android-verizon");
         property_set("ro.com.google.clientidbase.ms", "android-verizon");
         property_set("ro.com.google.clientidbase.yt", "android-verizon");
+    } else if (strstr(carrier, "retbr")) {
+        /* BR Edition */
+        property_set("ro.product.model", "XT1097");
+        property_set("ro.build.description", "victara_retbr-user 5.1 LPE23.32-21.3 5 release-keys");
+        property_set("ro.build.fingerprint", "motorola/victara_retbr/victara:5.1/LPE23.32-21.3/5:user/release-keys");
+        property_set("ro.telephony.default_network", "9");
+        property_set("telephony.lteOnGsmDevice", "1");
     } else {
-        /* all others */
+        /* Pure Edition */
         property_set("ro.product.model", "XT1095");
         property_set("ro.build.description", "victara_tmo-user 5.1 LPE23.32-21.3 5 release-keys");
         property_set("ro.build.fingerprint", "motorola/victara_tmo/victara:5.1/LPE23.32-21.3/5:user/release-keys");
