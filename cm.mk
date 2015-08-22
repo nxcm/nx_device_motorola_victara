@@ -11,3 +11,8 @@ PRODUCT_NAME := nx_victara
 NX_MODEL_NAME := Moto X (2014)
 
 PRODUCT_GMS_CLIENTID_BASE := android-motorola
+
+PRODUCT_BUILD_PROP_OVERRIDES += \
+    PRODUCT_NAME=victara_retbr \
+    BUILD_FINGERPRINT=motorola/victara_retbr/victara:5.1/LPE23.32-14/13:user/release-keys \
+    PRIVATE_BUILD_DESC="victara_retbr-user 5.1 LPE23.32-14 13 release-keys"
