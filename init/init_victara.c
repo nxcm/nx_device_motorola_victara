@@ -51,6 +51,7 @@ void vendor_load_properties()
 
     if (strstr(carrier, "vzw")) {
         /* xt1096 */
+        property_set("ro.hw.radio", "0x4");
         property_set("ro.product.model", "XT1096");
         property_set("ro.product.name", "victara_vzw");
         property_set("ro.build.description", "victara_verizon-user 5.1 LPE23.32-25-3 10 release-keys");
