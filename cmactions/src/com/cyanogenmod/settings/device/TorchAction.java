@@ -17,30 +17,27 @@
 package com.cyanogenmod.settings.device;
 
 import android.content.Context;
-import android.content.SharedPreferences;
 import android.hardware.camera2.CameraManager;
 import android.hardware.camera2.CameraCharacteristics;
 import android.hardware.camera2.CameraAccessException;
 import android.os.Vibrator;
-import android.preference.PreferenceManager;
 import android.util.Log;
 
-public class FlashlightActivationAction implements SensorAction {
+public class TorchAction implements SensorAction {
     private static final String TAG = "CMActions";
 
-    private static final String GESTURE_FLASHLIGHT_KEY = "gesture_flashlight";
+    private static final int TURN_SCREEN_ON_WAKE_LOCK_MS = 500;
 
     private CameraManager mCameraManager;
+    private final int mVibratorPeriod;
     private final Vibrator mVibrator;
     private String mRearCameraId;
     private static boolean mTorchEnabled;;
 
-    private boolean mGestureFlashlightEnabled = true;
-
-    public FlashlightActivationAction(Context mContext) {
+    public TorchAction(Context mContext, int vibratorPeriod) {
         mCameraManager = (CameraManager) mContext.getSystemService(Context.CAMERA_SERVICE);
         mVibrator = (Vibrator) mContext.getSystemService(Context.VIBRATOR_SERVICE);
-
+        mVibratorPeriod = vibratorPeriod;
         try {
             for (final String cameraId : mCameraManager.getCameraIdList()) {
                 CameraCharacteristics characteristics =
@@ -53,22 +50,16 @@ public class FlashlightActivationAction implements SensorAction {
             }
         } catch (CameraAccessException e) {
         }
-
-        SharedPreferences sharedPrefs = PreferenceManager.getDefaultSharedPreferences(mContext);
-        loadPreferences(sharedPrefs);
-        sharedPrefs.registerOnSharedPreferenceChangeListener(mPrefListener);
     }
 
     @Override
     public void action() {
-        if (mGestureFlashlightEnabled) {
-            mVibrator.vibrate(250);
-            if (mRearCameraId != null) {
-                try {
-                    mCameraManager.setTorchMode(mRearCameraId, !mTorchEnabled);
-                    mTorchEnabled = !mTorchEnabled;
-                } catch (CameraAccessException e) {
-                }
+        mVibrator.vibrate(mVibratorPeriod);
+        if (mRearCameraId != null) {
+            try {
+                mCameraManager.setTorchMode(mRearCameraId, !mTorchEnabled);
+                mTorchEnabled = !mTorchEnabled;
+            } catch (CameraAccessException e) {
             }
         }
     }
@@ -88,18 +79,4 @@ public class FlashlightActivationAction implements SensorAction {
             mTorchEnabled = false;
         }
     }
-
-    private void loadPreferences(SharedPreferences sharedPreferences) {
-        mGestureFlashlightEnabled = sharedPreferences.getBoolean(GESTURE_FLASHLIGHT_KEY, true);
-    }
-
-    private SharedPreferences.OnSharedPreferenceChangeListener mPrefListener =
-            new SharedPreferences.OnSharedPreferenceChangeListener() {
-        @Override
-        public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
-            if (GESTURE_FLASHLIGHT_KEY.equals(key)) {
-                mGestureFlashlightEnabled = sharedPreferences.getBoolean(GESTURE_FLASHLIGHT_KEY, true);
-            } 
-        }
-    };
 }
