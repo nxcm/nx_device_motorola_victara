@@ -15,5 +15,11 @@
     "repository":  "TheMuppets/proprietary_vendor_motorola",
     "target_path": "vendor/motorola",
     "revision":   "cm-12.1"
+  },
+  {
+    "remote":      "github",
+    "repository": "CyanogenMod/android_external_stlport",
+    "target_path": "external/stlport"
+    "revision":   "cm-13.0"
   }
 ]
