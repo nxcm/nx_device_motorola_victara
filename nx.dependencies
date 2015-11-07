@@ -3,7 +3,7 @@
     "remote":      "github",
     "repository": "CyanogenMod/android_device_qcom_common",
     "target_path": "device/qcom/common",
-    "revision":   "cm-12.1"
+    "revision":   "cm-13.0"
   },
   {
     "remote":     "bitbucket",
@@ -14,7 +14,7 @@
     "remote":      "github",
     "repository":  "TheMuppets/proprietary_vendor_motorola",
     "target_path": "vendor/motorola",
-    "revision":   "cm-12.1"
+    "revision":   "cm-13.0"
   },
   {
     "remote":      "github",
