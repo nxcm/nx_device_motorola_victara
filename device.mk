@@ -221,7 +221,7 @@ PRODUCT_BOOT_JARS += \
 
 # Power HAL
 PRODUCT_PACKAGES += \
-    power.msm8974
+    power.victara
 
 # Ramdisk
 PRODUCT_PACKAGES += \
