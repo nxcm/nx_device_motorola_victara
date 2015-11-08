@@ -7,3 +7,4 @@ allow rild sysfs_thermal:file r_file_perms;
 allow rild system_data_file:sock_file { create unlink setattr };
 allow rild wpa:unix_dgram_socket sendto;
 allow rild wpa_socket:sock_file write;
+allow rild time_daemon:unix_stream_socket connectto;

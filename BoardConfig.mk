@@ -134,6 +134,9 @@ TARGET_USERIMAGES_USE_F2FS := true
 include device/qcom/sepolicy/sepolicy.mk
 BOARD_SEPOLICY_DIRS += device/motorola/victara/sepolicy
 
+# Time services
+BOARD_USES_QC_TIME_SERVICES := true
+
 # Vendor Init
 TARGET_UNIFIED_DEVICE := true
 TARGET_INIT_VENDOR_LIB := libinit_victara
