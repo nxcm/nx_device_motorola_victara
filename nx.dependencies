@@ -23,8 +23,8 @@
   },
   {
     "remote":      "github",
-    "repository": "CyanogenMod/android_external_sony_boringssl-compat",
-    "target_path": "external/sony/boringssl-compat",
+    "repository": "CyanogenMod/android_external_connectivity",
+    "target_path": "external/connectivity",
     "revision":   "cm-13.0"
   }
 ]

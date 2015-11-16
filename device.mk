@@ -235,10 +235,6 @@ PRODUCT_PACKAGES += \
     libshim_ril \
     libshim_speakerbundle
 
-# SSL Compat
-PRODUCT_PACKAGES += \
-    libboringssl-compat
-
 # Stlport
 PRODUCT_PACKAGES += \
     libstlport
