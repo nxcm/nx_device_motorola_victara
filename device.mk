@@ -235,10 +235,6 @@ PRODUCT_PACKAGES += \
     libshim_ril \
     libshim_speakerbundle
 
-# Stlport
-PRODUCT_PACKAGES += \
-    libstlport
-
 # Support
 PRODUCT_PACKAGES += \
     libcnefeatureconfig \

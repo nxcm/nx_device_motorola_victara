@@ -17,12 +17,6 @@
   },
   {
     "remote":      "github",
-    "repository": "CyanogenMod/android_external_stlport",
-    "target_path": "external/stlport",
-    "revision":   "cm-13.0"
-  },
-  {
-    "remote":      "github",
     "repository": "CyanogenMod/android_external_connectivity",
     "target_path": "external/connectivity",
     "revision":   "cm-13.0"
