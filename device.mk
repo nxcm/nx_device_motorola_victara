@@ -207,7 +207,7 @@ PRODUCT_PACKAGES += \
 
 # Power HAL
 PRODUCT_PACKAGES += \
-    power.victara
+    power.msm8974
 
 # Ramdisk
 PRODUCT_PACKAGES += \
