@@ -649,14 +649,17 @@ on enable-low-power
     write /sys/devices/system/cpu/cpu1/cpufreq/scaling_max_freq 2457600
     write /sys/devices/system/cpu/cpu2/cpufreq/scaling_max_freq 2457600
     write /sys/devices/system/cpu/cpu3/cpufreq/scaling_max_freq 2457600
+    chown system system /sys/devices/system/cpu/cpu0/cpufreq/scaling_governor
     chown system system /sys/devices/system/cpu/cpu0/cpufreq/scaling_max_freq
     chown system system /sys/devices/system/cpu/cpu0/cpufreq/scaling_min_freq
     chown system system /sys/devices/system/cpu/cpu1/online
     chown system system /sys/devices/system/cpu/cpu2/online
     chown system system /sys/devices/system/cpu/cpu3/online
-    chmod 664 /sys/devices/system/cpu/cpu1/online
-    chmod 664 /sys/devices/system/cpu/cpu2/online
-    chmod 664 /sys/devices/system/cpu/cpu3/online
+
+    chown system system /sys/module/cpu_boost/parameters/sync_threshold
+    chown system system /sys/module/cpu_boost/parameters/input_boost_freq
+    chown system system /sys/module/msm_hotplug/max_cpus_online
+    chown system system /sys/class/kgsl/kgsl-3d0/devfreq/governor
 
     chown system system /sys/devices/system/cpu/cpufreq/interactive/timer_rate
     chmod 0660 /sys/devices/system/cpu/cpufreq/interactive/timer_rate
@@ -860,7 +863,7 @@ on enable-low-power
     # mpdecision
     setprop ro.qualcomm.perf.cores_online 2
     rm /data/system/default_values
-    # start mpdecision
+    stop mpdecision
 
 service atfwd /system/bin/ATFWD-daemon
     class late_start
@@ -1010,64 +1013,3 @@ on property:persist.sys.qc.sub.ssr.max=*
 #    start rootagent
 #on property:persist.sys.rootagent=0
 #    stop rootagent
-
-# Powersave
-on property:sys.perf.profile=0
-    write /sys/devices/system/cpu/cpu0/cpufreq/scaling_governor smartmax
-    write /sys/devices/system/cpu/cpu1/cpufreq/scaling_governor smartmax
-    write /sys/devices/system/cpu/cpu2/cpufreq/scaling_governor smartmax
-    write /sys/devices/system/cpu/cpu3/cpufreq/scaling_governor smartmax
-    write /sys/devices/system/cpu/cpu0/cpufreq/scaling_min_freq 268800
-    write /sys/devices/system/cpu/cpu1/cpufreq/scaling_min_freq 268800
-    write /sys/devices/system/cpu/cpu2/cpufreq/scaling_min_freq 268800
-    write /sys/devices/system/cpu/cpu3/cpufreq/scaling_min_freq 268800
-    write /sys/devices/system/cpu/cpu0/cpufreq/scaling_max_freq 1190400
-    write /sys/devices/system/cpu/cpu1/cpufreq/scaling_max_freq 1190400
-    write /sys/devices/system/cpu/cpu2/cpufreq/scaling_max_freq 1190400
-    write /sys/devices/system/cpu/cpu3/cpufreq/scaling_max_freq 1190400
-    write /sys/module/cpu_boost/parameters/sync_threshold 1190400
-    write /sys/module/cpu_boost/parameters/input_boost_freq 729600
-    write /sys/class/kgsl/kgsl-3d0/devfreq/governor powersave
-    write /sys/module/msm_hotplug/max_cpus_online 2
-
-# Balanced
-on property:sys.perf.profile=1
-    write /sys/devices/system/cpu/cpu0/cpufreq/scaling_governor intelliactive
-    write /sys/devices/system/cpu/cpu1/cpufreq/scaling_governor intelliactive
-    write /sys/devices/system/cpu/cpu2/cpufreq/scaling_governor intelliactive
-    write /sys/devices/system/cpu/cpu3/cpufreq/scaling_governor intelliactive
-    write /sys/devices/system/cpu/cpu0/cpufreq/scaling_min_freq 268800
-    write /sys/devices/system/cpu/cpu1/cpufreq/scaling_min_freq 268800
-    write /sys/devices/system/cpu/cpu2/cpufreq/scaling_min_freq 268800
-    write /sys/devices/system/cpu/cpu3/cpufreq/scaling_min_freq 268800
-    write /sys/devices/system/cpu/cpu0/cpufreq/scaling_max_freq 2457600
-    write /sys/devices/system/cpu/cpu1/cpufreq/scaling_max_freq 2457600
-    write /sys/devices/system/cpu/cpu2/cpufreq/scaling_max_freq 2457600
-    write /sys/devices/system/cpu/cpu3/cpufreq/scaling_max_freq 2457600
-    write /sys/module/cpu_boost/parameters/sync_threshold 1574400
-    write /sys/module/cpu_boost/parameters/input_boost_freq 1190400
-    write /sys/class/kgsl/kgsl-3d0/devfreq/governor msm-adreno-tz
-    write /sys/module/msm_hotplug/max_cpus_online 4
-
-# High performance
-on property:sys.perf.profile=2
-    write /sys/devices/system/cpu/cpu0/online 1
-    write /sys/devices/system/cpu/cpu1/online 1
-    write /sys/devices/system/cpu/cpu2/online 1
-    write /sys/devices/system/cpu/cpu3/online 1
-    write /sys/devices/system/cpu/cpu0/cpufreq/scaling_governor performance
-    write /sys/devices/system/cpu/cpu1/cpufreq/scaling_governor performance
-    write /sys/devices/system/cpu/cpu2/cpufreq/scaling_governor performance
-    write /sys/devices/system/cpu/cpu3/cpufreq/scaling_governor performance
-    write /sys/devices/system/cpu/cpu0/cpufreq/scaling_min_freq 268800
-    write /sys/devices/system/cpu/cpu1/cpufreq/scaling_min_freq 268800
-    write /sys/devices/system/cpu/cpu2/cpufreq/scaling_min_freq 268800
-    write /sys/devices/system/cpu/cpu3/cpufreq/scaling_min_freq 268800
-    write /sys/devices/system/cpu/cpu0/cpufreq/scaling_max_freq 2457600
-    write /sys/devices/system/cpu/cpu1/cpufreq/scaling_max_freq 2457600
-    write /sys/devices/system/cpu/cpu2/cpufreq/scaling_max_freq 2457600
-    write /sys/devices/system/cpu/cpu3/cpufreq/scaling_max_freq 2457600
-    write /sys/module/cpu_boost/parameters/sync_threshold 2457600
-    write /sys/module/cpu_boost/parameters/input_boost_freq 2457600
-    write /sys/class/kgsl/kgsl-3d0/devfreq/governor performance
-    write /sys/module/msm_hotplug/max_cpus_online 4
