@@ -24,16 +24,19 @@
 #include <hardware/power.h>
 
 #define CPUFREQ_PATH "/sys/devices/system/cpu/cpu0/cpufreq/"
-#define CPUFREQ1_PATH "/sys/devices/system/cpu/cpu1/"
-#define CPUFREQ2_PATH "/sys/devices/system/cpu/cpu2/"
-#define CPUFREQ3_PATH "/sys/devices/system/cpu/cpu3/"
-#define INTERACTIVE_PATH "/sys/devices/system/cpu/cpufreq/intelliactive/"
-#define MSMHOTPLUG_PATH "/sys/module/msm_hotplug/"
-#define GPU_PATH "/sys/class/kgsl/kgsl-3d0/devfreq/"
-#define BOOST_PATH "/sys/module/cpu_boost/parameters/"
+#define INTERACTIVE_PATH "/sys/devices/system/cpu/cpufreq/interactive/"
 
 #define SCALING_MAX_FREQ "2457600"
 #define SCALING_MAX_FREQ_LPM "1190400"
+
+#define HISPEED_FREQ "1190400"
+#define HISPEED_FREQ_LPM "998400"
+
+#define GO_HISPEED_LOAD "50"
+#define GO_HISPEED_LOAD_LPM "90"
+
+#define TARGET_LOADS "80 1574400:90 2457600:99"
+#define TARGET_LOADS_LPM "95 1190400:99"
 
 enum {
     PROFILE_POWER_SAVE = 0,
@@ -96,9 +99,13 @@ static void power_set_interactive(__attribute__((unused)) struct power_module *m
         return;
 
     if (on) {
-        sysfs_write(MSMHOTPLUG_PATH "max_cpus_online", "4");
+        sysfs_write(INTERACTIVE_PATH "hispeed_freq", HISPEED_FREQ);
+        sysfs_write(INTERACTIVE_PATH "go_hispeed_load", GO_HISPEED_LOAD);
+        sysfs_write(INTERACTIVE_PATH "target_loads", TARGET_LOADS);
     } else {
-        sysfs_write(MSMHOTPLUG_PATH "max_cpus_online", "2");
+        sysfs_write(INTERACTIVE_PATH "hispeed_freq", HISPEED_FREQ_LPM);
+        sysfs_write(INTERACTIVE_PATH "go_hispeed_load", GO_HISPEED_LOAD_LPM);
+        sysfs_write(INTERACTIVE_PATH "target_loads", TARGET_LOADS_LPM);
     }
 }
 
@@ -116,36 +123,39 @@ static void set_power_profile(int profile)
 
     switch (profile) {
     case PROFILE_BALANCED:
-        sysfs_write(MSMHOTPLUG_PATH "max_cpus_online", "4");
-        sysfs_write(GPU_PATH "governor", "msm-adreno-tz");
-        sysfs_write(BOOST_PATH "sync_threshold", "1574400");
-        sysfs_write(BOOST_PATH "input_boost_freq", "1190400");
+        sysfs_write(INTERACTIVE_PATH "boost", "0");
+        sysfs_write(INTERACTIVE_PATH "boostpulse_duration", "60000");
+        sysfs_write(INTERACTIVE_PATH "go_hispeed_load", GO_HISPEED_LOAD);
+        sysfs_write(INTERACTIVE_PATH "hispeed_freq", HISPEED_FREQ);
+        sysfs_write(INTERACTIVE_PATH "io_is_busy", "1");
+        sysfs_write(INTERACTIVE_PATH "min_sample_time", "60000");
+        sysfs_write(INTERACTIVE_PATH "sampling_down_factor", "100000");
+        sysfs_write(INTERACTIVE_PATH "target_loads", TARGET_LOADS);
         sysfs_write(CPUFREQ_PATH "scaling_max_freq", SCALING_MAX_FREQ);
-        sysfs_write(CPUFREQ_PATH "scaling_min_freq", "268800");
-        sysfs_write(CPUFREQ_PATH "scaling_governor", "intelliactive");
         ALOGD("%s: set balanced mode", __func__);
         break;
     case PROFILE_HIGH_PERFORMANCE:
-        sysfs_write(MSMHOTPLUG_PATH "max_cpus_online", "4");
-        sysfs_write(GPU_PATH "governor", "performance");
-        sysfs_write(BOOST_PATH "sync_threshold", "2457600");
-        sysfs_write(BOOST_PATH "input_boost_freq", "2457600");
+        sysfs_write(INTERACTIVE_PATH "boost", "1");
+        sysfs_write(INTERACTIVE_PATH "boostpulse_duration", "60000");
+        sysfs_write(INTERACTIVE_PATH "go_hispeed_load", GO_HISPEED_LOAD);
+        sysfs_write(INTERACTIVE_PATH "hispeed_freq", HISPEED_FREQ);
+        sysfs_write(INTERACTIVE_PATH "io_is_busy", "1");
+        sysfs_write(INTERACTIVE_PATH "min_sample_time", "60000");
+        sysfs_write(INTERACTIVE_PATH "sampling_down_factor", "100000");
+        sysfs_write(INTERACTIVE_PATH "target_loads", "80");
         sysfs_write(CPUFREQ_PATH "scaling_max_freq", SCALING_MAX_FREQ);
-        sysfs_write(CPUFREQ_PATH "scaling_min_freq", "2457600");
-        sysfs_write(CPUFREQ_PATH "scaling_governor", "performance");
-        sysfs_write(CPUFREQ1_PATH "online", "1");
-        sysfs_write(CPUFREQ2_PATH "online", "1");
-        sysfs_write(CPUFREQ3_PATH "online", "1");
         ALOGD("%s: set performance mode", __func__);
         break;
     case PROFILE_POWER_SAVE:
-        sysfs_write(MSMHOTPLUG_PATH "max_cpus_online", "2");
-        sysfs_write(GPU_PATH "governor", "powersave");
-        sysfs_write(BOOST_PATH "sync_threshold", "1190400");
-        sysfs_write(BOOST_PATH "input_boost_freq", "729600");
+        sysfs_write(INTERACTIVE_PATH "boost", "0");
+        sysfs_write(INTERACTIVE_PATH "boostpulse_duration", "0");
+        sysfs_write(INTERACTIVE_PATH "go_hispeed_load", GO_HISPEED_LOAD_LPM);
+        sysfs_write(INTERACTIVE_PATH "hispeed_freq", HISPEED_FREQ_LPM);
+        sysfs_write(INTERACTIVE_PATH "io_is_busy", "0");
+        sysfs_write(INTERACTIVE_PATH "min_sample_time", "60000");
+        sysfs_write(INTERACTIVE_PATH "sampling_down_factor", "100000");
+        sysfs_write(INTERACTIVE_PATH "target_loads", TARGET_LOADS_LPM);
         sysfs_write(CPUFREQ_PATH "scaling_max_freq", SCALING_MAX_FREQ_LPM);
-        sysfs_write(CPUFREQ_PATH "scaling_min_freq", "268800");
-        sysfs_write(CPUFREQ_PATH "scaling_governor", "smartmax");
         ALOGD("%s: set powersave", __func__);
         break;
     default:

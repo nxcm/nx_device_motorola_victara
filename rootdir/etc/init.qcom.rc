@@ -168,6 +168,44 @@ on boot
     # When GPU woken by touch events, keep it on until first app render
     write /sys/class/kgsl/kgsl-3d0/wake_timeout 250
 
+    # Switch to interactive and let PowerHAL configure it
+    write /sys/devices/system/cpu/cpu0/cpufreq/scaling_governor interactive
+    write /sys/devices/system/cpu/cpu1/cpufreq/scaling_governor interactive
+    write /sys/devices/system/cpu/cpu2/cpufreq/scaling_governor interactive
+    write /sys/devices/system/cpu/cpu3/cpufreq/scaling_governor interactive
+    chown system system /sys/devices/system/cpu/cpufreq/interactive/above_hispeed_delay
+    chmod 0644 /sys/devices/system/cpu/cpufreq/interactive/above_hispeed_delay
+    chown system system /sys/devices/system/cpu/cpufreq/interactive/boost
+    chmod 0644 /sys/devices/system/cpu/cpufreq/interactive/boost
+    chown system system /sys/devices/system/cpu/cpufreq/interactive/boostpulse
+    chmod 0644 /sys/devices/system/cpu/cpufreq/interactive/boostpulse
+    chown system system /sys/devices/system/cpu/cpufreq/interactive/boostpulse_duration
+    chmod 0644 /sys/devices/system/cpu/cpufreq/interactive/boostpulse_duration
+    chown system system /sys/devices/system/cpu/cpufreq/interactive/go_hispeed_load
+    chmod 0644 /sys/devices/system/cpu/cpufreq/interactive/go_hispeed_load
+    chown system system /sys/devices/system/cpu/cpufreq/interactive/hispeed_freq
+    chmod 0644 /sys/devices/system/cpu/cpufreq/interactive/hispeed_freq
+    chown system system /sys/devices/system/cpu/cpufreq/interactive/io_is_busy
+    chmod 0644 /sys/devices/system/cpu/cpufreq/interactive/io_is_busy
+    chown system system /sys/devices/system/cpu/cpufreq/interactive/min_sample_time
+    chmod 0644 /sys/devices/system/cpu/cpufreq/interactive/min_sample_time
+    chown system system /sys/devices/system/cpu/cpufreq/interactive/sampling_down_factor
+    chmod 0644 /sys/devices/system/cpu/cpufreq/interactive/sampling_down_factor
+    chown system system /sys/devices/system/cpu/cpufreq/interactive/sync_freq
+    chmod 0644 /sys/devices/system/cpu/cpufreq/interactive/sync_freq
+    chown system system /sys/devices/system/cpu/cpufreq/interactive/target_loads
+    chmod 0644 /sys/devices/system/cpu/cpufreq/interactive/target_loads
+    chown system system /sys/devices/system/cpu/cpufreq/interactive/timer_rate
+    chmod 0644 /sys/devices/system/cpu/cpufreq/interactive/timer_rate
+    chown system system /sys/devices/system/cpu/cpufreq/interactive/timer_slack
+    chmod 0644 /sys/devices/system/cpu/cpufreq/interactive/timer_slack
+    chown system system /sys/devices/system/cpu/cpufreq/interactive/up_threshold_any_cpu_freq
+    chmod 0644 /sys/devices/system/cpu/cpufreq/interactive/up_threshold_any_cpu_freq
+    chown system system /sys/devices/system/cpu/cpufreq/interactive/up_threshold_any_cpu_load
+    chmod 0644 /sys/devices/system/cpu/cpufreq/interactive/up_threshold_any_cpu_load
+    chown system system /sys/devices/system/cpu/cpu0/cpufreq/scaling_max_freq
+    chown system system /sys/devices/system/cpu/cpu0/cpufreq/scaling_min_freq
+
 # msm specific files that need to be created on /data
 on post-fs-data
     mkdir /data/misc/bluetooth 0770 bluetooth bluetooth
@@ -552,16 +590,16 @@ service location_mq /system/bin/location-mq
     group gps
     disabled
 
-service time_daemon /system/bin/time_daemon
-   class late_start
-   user root
-   group root
-
 service xtwifi_inet /system/bin/xtwifi-inet-agent
     class late_start
     user gps
     group inet gps
     disabled
+
+service time_daemon /system/bin/time_daemon
+   class late_start
+   user root
+   group root
 
 service xtwifi_client /system/bin/xtwifi-client
     class late_start
@@ -637,233 +675,14 @@ on enable-low-power
     write /sys/devices/system/cpu/cpu3/online 1
     write /sys/class/devfreq/qcom,cpubw.41/governor cpubw_hwmon
 
-    write /sys/devices/system/cpu/cpu0/cpufreq/scaling_governor intelliactive
-    write /sys/devices/system/cpu/cpu1/cpufreq/scaling_governor intelliactive
-    write /sys/devices/system/cpu/cpu2/cpufreq/scaling_governor intelliactive
-    write /sys/devices/system/cpu/cpu3/cpufreq/scaling_governor intelliactive
-    write /sys/devices/system/cpu/cpu0/cpufreq/scaling_min_freq 268800
-    write /sys/devices/system/cpu/cpu1/cpufreq/scaling_min_freq 268800
-    write /sys/devices/system/cpu/cpu2/cpufreq/scaling_min_freq 268800
-    write /sys/devices/system/cpu/cpu3/cpufreq/scaling_min_freq 268800
-    write /sys/devices/system/cpu/cpu0/cpufreq/scaling_max_freq 2457600
-    write /sys/devices/system/cpu/cpu1/cpufreq/scaling_max_freq 2457600
-    write /sys/devices/system/cpu/cpu2/cpufreq/scaling_max_freq 2457600
-    write /sys/devices/system/cpu/cpu3/cpufreq/scaling_max_freq 2457600
-    chown system system /sys/devices/system/cpu/cpu0/cpufreq/scaling_governor
-    chown system system /sys/devices/system/cpu/cpu0/cpufreq/scaling_max_freq
-    chown system system /sys/devices/system/cpu/cpu0/cpufreq/scaling_min_freq
-    chown system system /sys/devices/system/cpu/cpu1/online
-    chown system system /sys/devices/system/cpu/cpu2/online
-    chown system system /sys/devices/system/cpu/cpu3/online
-
-    chown system system /sys/module/cpu_boost/parameters/sync_threshold
-    chown system system /sys/module/cpu_boost/parameters/input_boost_freq
-    chown system system /sys/module/msm_hotplug/max_cpus_online
-    chown system system /sys/class/kgsl/kgsl-3d0/devfreq/governor
-
-    chown system system /sys/devices/system/cpu/cpufreq/interactive/timer_rate
-    chmod 0660 /sys/devices/system/cpu/cpufreq/interactive/timer_rate
-    chown system system /sys/devices/system/cpu/cpufreq/interactive/timer_slack
-    chmod 0660 /sys/devices/system/cpu/cpufreq/interactive/timer_slack
-    chown system system /sys/devices/system/cpu/cpufreq/interactive/min_sample_time
-    chmod 0660 /sys/devices/system/cpu/cpufreq/interactive/min_sample_time
-    chown system system /sys/devices/system/cpu/cpufreq/interactive/hispeed_freq
-    chmod 0660 /sys/devices/system/cpu/cpufreq/interactive/hispeed_freq
-    chown system system /sys/devices/system/cpu/cpufreq/interactive/target_loads
-    chmod 0660 /sys/devices/system/cpu/cpufreq/interactive/target_loads
-    chown system system /sys/devices/system/cpu/cpufreq/interactive/go_hispeed_load
-    chmod 0660 /sys/devices/system/cpu/cpufreq/interactive/go_hispeed_load
-    chown system system /sys/devices/system/cpu/cpufreq/interactive/above_hispeed_delay
-    chmod 0660 /sys/devices/system/cpu/cpufreq/interactive/above_hispeed_delay
-    chown system system /sys/devices/system/cpu/cpufreq/interactive/boost
-    chmod 0660 /sys/devices/system/cpu/cpufreq/interactive/boost
-    chown system system /sys/devices/system/cpu/cpufreq/interactive/boostpulse
-    chmod 0220 /sys/devices/system/cpu/cpufreq/interactive/boostpulse
-    chown system system /sys/devices/system/cpu/cpufreq/interactive/input_boost
-    chmod 0660 /sys/devices/system/cpu/cpufreq/interactive/input_boost
-    chown system system /sys/devices/system/cpu/cpufreq/interactive/boostpulse_duration
-    chmod 0660 /sys/devices/system/cpu/cpufreq/interactive/boostpulse_duration
-    chown system system /sys/devices/system/cpu/cpufreq/interactive/io_is_busy
-    chmod 0660 /sys/devices/system/cpu/cpufreq/interactive/io_is_busy
-    chown system system /sys/devices/system/cpu/cpufreq/interactive/target_load
-    chmod 0660 /sys/devices/system/cpu/cpufreq/interactive/target_load
-    chown system system /sys/devices/system/cpu/cpufreq/interactive/sync_freq
-    chmod 0660 /sys/devices/system/cpu/cpufreq/interactive/sync_freq
-    chown system system /sys/devices/system/cpu/cpufreq/interactive/up_threshold_any_cpu_freq
-    chmod 0660 /sys/devices/system/cpu/cpufreq/interactive/up_threshold_any_cpu_freq
-    chown system system /sys/devices/system/cpu/cpufreq/interactive/up_threshold_any_cpu_load
-    chmod 0660 /sys/devices/system/cpu/cpufreq/interactive/up_threshold_any_cpu_load
-    chown system system /sys/devices/system/cpu/cpufreq/interactive/sampling_down_factor
-    chmod 0660 /sys/devices/system/cpu/cpufreq/interactive/sampling_down_factor
     chown system system /dev/cpuctl/cpu.notify_on_migrate
     chmod 0660 /dev/cpuctl/cpu.notify_on_migrate
-    chown system system /sys/module/cpu_boost/parameters/boost_ms
-    chmod 0660 /sys/module/cpu_boost/parameters/boost_ms
-    chown system system /sys/module/cpu_boost/parameters/sync_threshold
-    chmod 0660 /sys/module/cpu_boost/parameters/sync_threshold
-
-    # Interactive governor
-
-    write /sys/devices/system/cpu/cpufreq/interactive/above_hispeed_delay "20000 1400000:40000 1700000:20000"
-    # The power hal actually managest go_hisped_load and must also be changed if you change this
-    write /sys/devices/system/cpu/cpufreq/interactive/go_hispeed_load 50
-    write /sys/devices/system/cpu/cpufreq/interactive/hispeed_freq 1190400
-    write /sys/devices/system/cpu/cpufreq/interactive/io_is_busy 1
-    write /sys/devices/system/cpu/cpufreq/interactive/target_loads "85 1500000:90 1800000:70"
-    write /sys/devices/system/cpu/cpufreq/interactive/min_sample_time 40000
-    write /sys/devices/system/cpu/cpufreq/interactive/timer_rate 30000
-    write /sys/devices/system/cpu/cpufreq/interactive/max_freq_hysteresis 100000
-    write /sys/devices/system/cpu/cpufreq/interactive/timer_slack 30000
     write /dev/cpuctl/cpu.notify_on_migrate 1
-
-    # Smartmax NX Governor
-
-    chown system system /sys/devices/system/cpu/cpufreq/smartmax/awake_ideal_freq
-    chmod 0660 /sys/devices/system/cpu/cpufreq/smartmax/awake_ideal_freq
-    chown system system /sys/devices/system/cpu/cpufreq/smartmax/boost_duration
-    chmod 0660 /sys/devices/system/cpu/cpufreq/smartmax/boost_duration
-    chown system system /sys/devices/system/cpu/cpufreq/smartmax/boost_freq
-    chmod 0660 /sys/devices/system/cpu/cpufreq/smartmax/boost_freq
-    chown system system /sys/devices/system/cpu/cpufreq/smartmax/boostpulse_duration
-    chmod 0660 /sys/devices/system/cpu/cpufreq/smartmax/boostpulse_duration
-    chown system system /sys/devices/system/cpu/cpufreq/smartmax/debug_mask
-    chmod 0660 /sys/devices/system/cpu/cpufreq/smartmax/debug_mask
-    chown system system /sys/devices/system/cpu/cpufreq/smartmax/down_rate
-    chmod 0660 /sys/devices/system/cpu/cpufreq/smartmax/down_rate
-    chown system system /sys/devices/system/cpu/cpufreq/smartmax/ignore_nice
-    chmod 0660 /sys/devices/system/cpu/cpufreq/smartmax/ignore_nice
-    chown system system /sys/devices/system/cpu/cpufreq/smartmax/input_boost_duration
-    chmod 0660 /sys/devices/system/cpu/cpufreq/smartmax/input_boost_duration
-    chown system system /sys/devices/system/cpu/cpufreq/smartmax/input_boost_freq
-    chmod 0660 /sys/devices/system/cpu/cpufreq/smartmax/input_boost_freq
-    chown system system /sys/devices/system/cpu/cpufreq/smartmax/io_is_busy
-    chmod 0660 /sys/devices/system/cpu/cpufreq/smartmax/io_is_busy
-    chown system system /sys/devices/system/cpu/cpufreq/smartmax/max_cpu_load
-    chmod 0660 /sys/devices/system/cpu/cpufreq/smartmax/max_cpu_load
-    chown system system /sys/devices/system/cpu/cpufreq/smartmax/min_cpu_load
-    chmod 0660 /sys/devices/system/cpu/cpufreq/smartmax/min_cpu_load
-    chown system system /sys/devices/system/cpu/cpufreq/smartmax/min_sampling_rate
-    chmod 0660 /sys/devices/system/cpu/cpufreq/smartmax/min_sampling_rate
-    chown system system /sys/devices/system/cpu/cpufreq/smartmax/ramp_down_step
-    chmod 0660 /sys/devices/system/cpu/cpufreq/smartmax/ramp_down_step
-    chown system system /sys/devices/system/cpu/cpufreq/smartmax/ramp_up_during_boost
-    chmod 0660 /sys/devices/system/cpu/cpufreq/smartmax/ramp_up_during_boost
-    chown system system /sys/devices/system/cpu/cpufreq/smartmax/ramp_up_step
-    chmod 0660 /sys/devices/system/cpu/cpufreq/smartmax/ramp_up_step
-    chown system system /sys/devices/system/cpu/cpufreq/smartmax/sampling_rate
-    chmod 0660 /sys/devices/system/cpu/cpufreq/smartmax/sampling_rate
-    chown system system /sys/devices/system/cpu/cpufreq/smartmax/suspend_ideal_freq
-    chmod 0660 /sys/devices/system/cpu/cpufreq/smartmax/suspend_ideal_freq
-    chown system system /sys/devices/system/cpu/cpufreq/smartmax/touch_poke_freq
-    chmod 0660 /sys/devices/system/cpu/cpufreq/smartmax/touch_poke_freq
-    chown system system /sys/devices/system/cpu/cpufreq/smartmax/up_rate
-    chmod 0660 /sys/devices/system/cpu/cpufreq/smartmax/up_rate
-
-    # Intelliactive Governor
-
-    chown system system /sys/devices/system/cpu/cpufreq/intelliactive/timer_rate
-    chmod 0660 /sys/devices/system/cpu/cpufreq/intelliactive/timer_rate
-    chown system system /sys/devices/system/cpu/cpufreq/intelliactive/timer_slack
-    chmod 0660 /sys/devices/system/cpu/cpufreq/intelliactive/timer_slack
-    chown system system /sys/devices/system/cpu/cpufreq/intelliactive/min_sample_time
-    chmod 0660 /sys/devices/system/cpu/cpufreq/intelliactive/min_sample_time
-    chown system system /sys/devices/system/cpu/cpufreq/intelliactive/hispeed_freq
-    chmod 0660 /sys/devices/system/cpu/cpufreq/intelliactive/hispeed_freq
-    chown system system /sys/devices/system/cpu/cpufreq/intelliactive/target_loads
-    chmod 0660 /sys/devices/system/cpu/cpufreq/intelliactive/target_loads
-    chown system system /sys/devices/system/cpu/cpufreq/intelliactive/go_hispeed_load
-    chmod 0660 /sys/devices/system/cpu/cpufreq/intelliactive/go_hispeed_load
-    chown system system /sys/devices/system/cpu/cpufreq/intelliactive/above_hispeed_delay
-    chmod 0660 /sys/devices/system/cpu/cpufreq/intelliactive/above_hispeed_delay
-    chown system system /sys/devices/system/cpu/cpufreq/intelliactive/boost
-    chmod 0660 /sys/devices/system/cpu/cpufreq/intelliactive/boost
-    chown system system /sys/devices/system/cpu/cpufreq/intelliactive/boostpulse
-    chmod 0660 /sys/devices/system/cpu/cpufreq/intelliactive/boostpulse
-    chown system system /sys/devices/system/cpu/cpufreq/intelliactive/boostpulse_duration
-    chmod 0660 /sys/devices/system/cpu/cpufreq/intelliactive/boostpulse_duration
-    chown system system /sys/devices/system/cpu/cpufreq/intelliactive/io_is_busy
-    chmod 0660 /sys/devices/system/cpu/cpufreq/intelliactive/io_is_busy
-    chown system system /sys/devices/system/cpu/cpufreq/intelliactive/sync_freq
-    chmod 0660 /sys/devices/system/cpu/cpufreq/intelliactive/sync_freq
-    chown system system /sys/devices/system/cpu/cpufreq/intelliactive/up_threshold_any_cpu_freq
-    chmod 0660 /sys/devices/system/cpu/cpufreq/intelliactive/up_threshold_any_cpu_freq
-    chown system system /sys/devices/system/cpu/cpufreq/intelliactive/up_threshold_any_cpu_load
-    chmod 0660 /sys/devices/system/cpu/cpufreq/intelliactive/up_threshold_any_cpu_load
-    chown system system /sys/devices/system/cpu/cpufreq/intelliactive/sampling_down_factor
-    chmod 0660 /sys/devices/system/cpu/cpufreq/intelliactive/sampling_down_factor
-    chown system system /sys/devices/system/cpu/cpufreq/intelliactive/two_phase_freq
-    chmod 0660 /sys/devices/system/cpu/cpufreq/intelliactive/two_phase_freq
-
-    # Intellidemand Governor
-
-    chown system system /sys/devices/system/cpu/cpufreq/intellidemand/down_differential
-    chmod 0660 /sys/devices/system/cpu/cpufreq/intellidemand/down_differential
-    chown system system /sys/devices/system/cpu/cpufreq/intellidemand/enable_cpu_boost
-    chmod 0660 /sys/devices/system/cpu/cpufreq/intellidemand/enable_cpu_boost
-    chown system system /sys/devices/system/cpu/cpufreq/intellidemand/freq_step
-    chmod 0660 /sys/devices/system/cpu/cpufreq/intellidemand/freq_step
-    chown system system /sys/devices/system/cpu/cpufreq/intellidemand/ignore_nice_load
-    chmod 0660 /sys/devices/system/cpu/cpufreq/intellidemand/ignore_nice_load
-    chown system system /sys/devices/system/cpu/cpufreq/intellidemand/input_event_min_freq
-    chmod 0660 /sys/devices/system/cpu/cpufreq/intellidemand/input_event_min_freq
-    chown system system /sys/devices/system/cpu/cpufreq/intellidemand/io_is_busy
-    chmod 0660 /sys/devices/system/cpu/cpufreq/intellidemand/io_is_busy
-    chown system system /sys/devices/system/cpu/cpufreq/intellidemand/optimal_freq
-    chmod 0660 /sys/devices/system/cpu/cpufreq/intellidemand/optimal_freq
-    chown system system /sys/devices/system/cpu/cpufreq/intellidemand/powersave_bias
-    chmod 0660 /sys/devices/system/cpu/cpufreq/intellidemand/powersave_bias
-    chown system system /sys/devices/system/cpu/cpufreq/intellidemand/sampling_down_factor
-    chmod 0660 /sys/devices/system/cpu/cpufreq/intellidemand/sampling_down_factor
-    chown system system /sys/devices/system/cpu/cpufreq/intellidemand/sampling_early_factor
-    chmod 0660 /sys/devices/system/cpu/cpufreq/intellidemand/sampling_early_factor
-    chown system system /sys/devices/system/cpu/cpufreq/intellidemand/sampling_interim_factor
-    chmod 0660 /sys/devices/system/cpu/cpufreq/intellidemand/sampling_interim_factor
-    chown system system /sys/devices/system/cpu/cpufreq/intellidemand/sampling_rate
-    chmod 0660 /sys/devices/system/cpu/cpufreq/intellidemand/sampling_rate
-    chown system system /sys/devices/system/cpu/cpufreq/intellidemand/sampling_rate_min
-    chmod 0660 /sys/devices/system/cpu/cpufreq/intellidemand/sampling_rate_min
-    chown system system /sys/devices/system/cpu/cpufreq/intellidemand/smart_each_off
-    chmod 0660 /sys/devices/system/cpu/cpufreq/intellidemand/smart_each_off
-    chown system system /sys/devices/system/cpu/cpufreq/intellidemand/smart_high_slow_up_dur
-    chmod 0660 /sys/devices/system/cpu/cpufreq/intellidemand/smart_high_slow_up_dur
-    chown system system /sys/devices/system/cpu/cpufreq/intellidemand/smart_high_slow_up_freq
-    chmod 0660 /sys/devices/system/cpu/cpufreq/intellidemand/smart_high_slow_up_freq
-    chown system system /sys/devices/system/cpu/cpufreq/intellidemand/smart_high_slow_up_load
-    chmod 0660 /sys/devices/system/cpu/cpufreq/intellidemand/smart_high_slow_up_load
-    chown system system /sys/devices/system/cpu/cpufreq/intellidemand/smart_up
-    chmod 0660 /sys/devices/system/cpu/cpufreq/intellidemand/smart_up
-    chown system system /sys/devices/system/cpu/cpufreq/intellidemand/step_up_early_hispeed
-    chmod 0660 /sys/devices/system/cpu/cpufreq/intellidemand/step_up_early_hispeed
-    chown system system /sys/devices/system/cpu/cpufreq/intellidemand/step_up_interim_hispeed
-    chmod 0660 /sys/devices/system/cpu/cpufreq/intellidemand/step_up_interim_hispeed
-    chown system system /sys/devices/system/cpu/cpufreq/intellidemand/sync_freq
-    chmod 0660 /sys/devices/system/cpu/cpufreq/intellidemand/sync_freq
-    chown system system /sys/devices/system/cpu/cpufreq/intellidemand/two_phase_freq
-    chmod 0660 /sys/devices/system/cpu/cpufreq/intellidemand/two_phase_freq
-    chown system system /sys/devices/system/cpu/cpufreq/intellidemand/ui_sampling_rate
-    chmod 0660 /sys/devices/system/cpu/cpufreq/intellidemand/ui_sampling_rate
-    chown system system /sys/devices/system/cpu/cpufreq/intellidemand/ui_timeout
-    chmod 0660 /sys/devices/system/cpu/cpufreq/intellidemand/ui_timeout
-    chown system system /sys/devices/system/cpu/cpufreq/intellidemand/up_threshold
-    chmod 0660 /sys/devices/system/cpu/cpufreq/intellidemand/up_threshold
-    chown system system /sys/devices/system/cpu/cpufreq/intellidemand/up_threshold_any_cpu_load
-    chmod 0660 /sys/devices/system/cpu/cpufreq/intellidemand/up_threshold_any_cpu_load
-    chown system system /sys/devices/system/cpu/cpufreq/intellidemand/up_threshold_multi_core
-    chmod 0660 /sys/devices/system/cpu/cpufreq/intellidemand/up_threshold_multi_core
-    write /sys/devices/system/cpu/cpufreq/intellidemand/enable_boost_cpu 1
-    write /sys/devices/system/cpu/cpufreq/intellidemand/io_is_busy 1
-
-    # CPU Boost driver
-
-    # write /sys/module/cpu_boost/parameters/boost_ms 20
-    write /sys/module/cpu_boost/parameters/sync_threshold 1574400
-    write /sys/module/cpu_boost/parameters/input_boost_freq 1190400
-    write /sys/module/cpu_boost/parameters/input_boost_ms 500
 
     # mpdecision
     setprop ro.qualcomm.perf.cores_online 2
     rm /data/system/default_values
-    stop mpdecision
+    start mpdecision
 
 service atfwd /system/bin/ATFWD-daemon
     class late_start
