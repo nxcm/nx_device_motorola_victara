@@ -13,9 +13,14 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+#include <stdbool.h>
 #include <errno.h>
 #include <string.h>
 #include <fcntl.h>
+
+#include <sys/types.h>
+#include <sys/stat.h>
+#include <unistd.h>
 
 #define LOG_TAG "PowerHAL"
 #include <utils/Log.h>
@@ -77,6 +82,15 @@ static int sysfs_write(char *path, char *s)
     return ret;
 }
 
+static bool check_governor(void)
+{
+    struct stat s;
+    int err = stat(INTERACTIVE_PATH, &s);
+    if (err != 0) return false;
+    if (S_ISDIR(s.st_mode)) return true;
+    return false;
+}
+
 static void power_init(__attribute__((unused)) struct power_module *module)
 {
     ALOGI("%s", __func__);
@@ -98,6 +112,9 @@ static void power_set_interactive(__attribute__((unused)) struct power_module *m
     if (current_power_profile != PROFILE_BALANCED)
         return;
 
+    // break out early if governor is not interactive
+    if (!check_governor()) return;
+
     if (on) {
         sysfs_write(INTERACTIVE_PATH "hispeed_freq", HISPEED_FREQ);
         sysfs_write(INTERACTIVE_PATH "go_hispeed_load", GO_HISPEED_LOAD);
@@ -117,6 +134,8 @@ static void set_power_profile(int profile)
         ALOGD("%s: low power mode enabled, ignoring profile change request", __func__);
         return;
     }
+
+    if (!check_governor()) return;
 
     if (profile == current_power_profile)
         return;
@@ -194,6 +213,9 @@ static void power_hint( __attribute__((unused)) struct power_module *module,
     case POWER_HINT_INTERACTION:
         if (current_power_profile != PROFILE_BALANCED)
             return;
+
+        // break out early if governor is not interactive
+        if (!check_governor()) return;
 
         if (boostpulse_open() >= 0) {
             snprintf(buf, sizeof(buf), "%d", 1);
