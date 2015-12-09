@@ -94,6 +94,3 @@ ro.com.google.clientidbase.gmm=android-motorola
 
 # Wifi
 ro.disableWifiApFirmwareReload=true
-
-# FRP
-ro.frp.pst=/dev/block/platform/msm_sdcc.1/by-name/frp
