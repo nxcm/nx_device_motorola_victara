@@ -202,6 +202,36 @@ on boot
     chmod 0644 /sys/devices/system/cpu/cpufreq/interactive/up_threshold_any_cpu_load
     chown system system /sys/devices/system/cpu/cpu0/cpufreq/scaling_max_freq
     chown system system /sys/devices/system/cpu/cpu0/cpufreq/scaling_min_freq
+    chown system system /sys/devices/system/cpu/cpu2/cpufreq/scaling_max_freq
+    chown system system /sys/devices/system/cpu/cpu3/cpufreq/scaling_max_freq
+    chown system system /sys/devices/system/cpu/cpu0/cpufreq/scaling_min_freq
+    chown system system /sys/devices/system/cpu/cpu1/cpufreq/scaling_min_freq
+    chown system system /sys/devices/system/cpu/cpu2/cpufreq/scaling_min_freq
+    chown system system /sys/devices/system/cpu/cpu3/cpufreq/scaling_min_freq
+    chown system system /sys/devices/system/cpu/cpu1/online
+    chown system system /sys/devices/system/cpu/cpu2/online
+    chown system system /sys/devices/system/cpu/cpu3/online
+    chmod 664 /sys/devices/system/cpu/cpu1/online
+    chmod 664 /sys/devices/system/cpu/cpu2/online
+    chmod 664 /sys/devices/system/cpu/cpu3/online
+
+    # More Values
+    chown system system /sys/module/cpu_boost/parameters/sync_threshold
+    chmod 0644 /sys/module/cpu_boost/parameters/sync_threshold
+    chown system system /sys/module/cpu_boost/parameters/input_boost_freq
+    chmod 0644 /sys/module/cpu_boost/parameters/input_boost_freq
+    chown system system /sys/module/intelli_plug/parameters/intelli_plug_active
+    chmod 0644 /sys/module/intelli_plug/parameters/intelli_plug_active
+    chown system system /sys/module/intelli_plug/parameters/nr_run_profile_sel
+    chmod 0644 /sys/module/intelli_plug/parameters/nr_run_profile_sel
+    chown system system /sys/module/intelli_plug/parameters/touch_boost_active
+    chmod 0644 /sys/module/intelli_plug/parameters/touch_boost_active
+    chown system system /sys/module/intelli_plug/parameters/screen_off_max
+    chmod 0644 /sys/module/intelli_plug/parameters/screen_off_max
+    chown system system /sys/module/msm_thermal_v2/parameters/enabled
+    chmod 0644 /sys/module/msm_thermal_v2/parameters/enabled
+    chown system system /sys/class/kgsl/kgsl-3d0/devfreq/governor
+    chmod 0644 /sys/class/kgsl/kgsl-3d0/devfreq/governor
 
 # msm specific files that need to be created on /data
 on post-fs-data
@@ -668,6 +698,24 @@ on enable-low-power
     write /sys/module/msm_show_resume_irq/parameters/debug_mask 1
     write /sys/module/msm_thermal/core_control/enabled 0
 
+    write /sys/devices/system/cpu/cpufreq/interactive/above_hispeed_delay "20000 1400000:40000 1700000:20000"
+    write /sys/devices/system/cpu/cpufreq/interactive/go_hispeed_load 90
+    write /sys/devices/system/cpu/cpufreq/interactive/hispeed_freq 1190400
+    write /sys/devices/system/cpu/cpufreq/interactive/io_is_busy 1
+    write /sys/devices/system/cpu/cpufreq/interactive/target_loads "85 1500000:90 1800000:70"
+    write /sys/devices/system/cpu/cpufreq/interactive/min_sample_time 40000
+    write /sys/devices/system/cpu/cpufreq/interactive/timer_rate 30000
+    write /sys/devices/system/cpu/cpufreq/interactive/sampling_down_factor 100000
+    write /sys/devices/system/cpu/cpufreq/interactive/sync_freq 1036800
+    write /sys/devices/system/cpu/cpufreq/interactive/up_threshold_any_cpu_load 50
+    write /sys/devices/system/cpu/cpufreq/interactive/up_threshold_any_cpu_freq 1190400
+    write /sys/devices/system/cpu/cpufreq/interactive/timer_slack 20000
+
+    write /sys/module/cpu_boost/parameters/boost_ms 20
+    write /sys/module/cpu_boost/parameters/sync_threshold 1574400
+    write /sys/module/cpu_boost/parameters/input_boost_freq 1190400
+    write /sys/module/cpu_boost/parameters/input_boost_ms 40
+
     write /sys/devices/system/cpu/cpu0/cpufreq/scaling_min_freq 268800
     write /sys/devices/system/cpu/cpu1/cpufreq/scaling_min_freq 268800
     write /sys/devices/system/cpu/cpu2/cpufreq/scaling_min_freq 268800
@@ -683,9 +731,9 @@ on enable-low-power
     write /dev/cpuctl/cpu.notify_on_migrate 1
 
     # mpdecision
-    setprop ro.qualcomm.perf.cores_online 2
-    rm /data/system/default_values
-    start mpdecision
+    # setprop ro.qualcomm.perf.cores_online 2
+    # rm /data/system/default_values
+    stop mpdecision
 
 service atfwd /system/bin/ATFWD-daemon
     class late_start
