@@ -14,11 +14,5 @@
     "remote":      "bitbucket",
     "repository":  "nexusxm/proprietary_vendor_motorola",
     "target_path": "vendor/motorola"
-  },
-  {
-    "remote":      "github",
-    "repository": "CyanogenMod/android_external_connectivity",
-    "target_path": "external/connectivity",
-    "revision":   "cm-13.0"
   }
 ]
